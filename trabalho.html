@@ -207,11 +207,29 @@
             this.vel = 1;
             this.sprite = sprite;
             this.status = 2;
-            this.vida = 1;
+            this.vida = 2;
+            this.w = 30;
+            this.h = 40;
+            this.hitBox = {x:this.x, y: this.y, w: this.w, h:this.h};
+            this.invecibilidade = 0;
+            this.knockback = 0;
 
         }
 
         update(tempo, warrior){
+
+            if(this.invecibilidade>0){
+                this.invecibilidade--;
+            }
+
+            if(this.knockback >0){
+                this.knockback = this.knockback - 0.25;
+            }
+
+            if(this.knockback <0){
+                this.knockback = this.knockback + 0.25;
+            }
+
             if(this.vida>0){
                 if (this.x - warrior.x>=0 && this.x -warrior.x <150){
                     this.x = this.x - this.vel;
@@ -224,6 +242,10 @@
                 } else {
                     this.status = 2;
                 }
+                
+                this.x = this.x + this.knockback;
+                this.hitBox.x = this.x;
+                this.hitBox.y = this.y;
             }else{
                 this.status = 6;
             }
@@ -301,6 +323,7 @@
     enemy_karl = new Enemy(450, 360, enemy_sprites);
     enemy_lee = new Enemy(350, 360, enemy_sprites);
     enemy_albert = new Enemy(450, 360, enemy_sprites);
+    map_3_enemies = [enemy_karl, enemy_lee];
 
     document.addEventListener("keydown", (event) => {
         teclas[event.key] = true;
@@ -398,39 +421,26 @@
                 ctx.drawImage(flag, 80*i + 40, 200, 30, 30);
             }
 
-            enemy_karl.update(tempo, warrior_jhon);
-            enemy_karl.draw();
+            for(var i = 0; i<map_3_enemies.length; i++){
+                map_3_enemies[i].update(tempo, warrior_jhon);
+                map_3_enemies[i].draw();
 
-            enemy_lee.update(tempo, warrior_jhon);
-            enemy_lee.draw();
+            }
 
             if (warrior_jhon.status == 5 || warrior_jhon.status == 6) {
                 let hit = warrior_jhon.getHitbox();
 
-                let enemyBox_karl = {
-                    x: enemy_karl.x,
-                    y: enemy_karl.y,
-                    w: 30,
-                    h: 40
-                };
-
-                let enemyBox_lee = {
-                    x: enemy_lee.x,
-                    y: enemy_lee.y,
-                    w: 30,
-                    h: 40
-                };
-
-                if (colide(hit, enemyBox_karl)) {
-                    enemy_karl.vida--;
-                    console.log("ACERTOU KARL!");
+                for(var i = 0; i<map_3_enemies.length; i++){
+                    if(colide(hit, map_3_enemies[i].hitBox) && map_3_enemies[i].invecibilidade == 0){
+                        map_3_enemies[i].vida--;
+                        map_3_enemies[i].invecibilidade = 40;
+                        if(map_3_enemies[i].x - warrior_jhon.x >= 0){
+                            map_3_enemies[i].knockback = 4;
+                        }else{
+                            map_3_enemies[i].knockback = -4;
+                        }
+                    }
                 }
-
-                if (colide(hit, enemyBox_lee)) {
-                    enemy_lee.vida--;
-                    console.log("ACERTOU LEE!");
-                }
-
                 warrior_jhon.status = 2; 
             }
         } else if (mapa == 3){
