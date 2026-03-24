@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Canvas</title>
+    </head>
+    <body>
+        <canvas id = "canvas" width = "600" height = "600"></canvas>
+        <script>
+
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    let tempo  = 0;
+    var mapa = 0;
+    var num_cenarios = 4;
+
+    ctx.imageSmoothingEnabled = false;
+
+    let teclas = {};
+
+    //imagens
+
+    let sun_0 = new Image();
+    sun_0.src = "suna_0.png";
+    let sun_1 = new Image();
+    sun_1.src = "suna_1.png";
+
+    let warrior_0 = new Image();
+    let warrior_1 = new Image();
+    let warrior_2 = new Image();
+    let warrior_3 = new Image();
+
+    warrior_0.src = "warrior_0.png";
+    warrior_1.src = "warrior_1.png";
+    warrior_2.src = "warrior_2.png";
+    warrior_3.src = "warrior_3.png";
+
+    warrior_sprites = [warrior_0, warrior_1, warrior_2, warrior_3];
+
+    let enemy_0 = new Image();
+    let enemy_1 = new Image();
+    let enemy_2 = new Image();
+    let enemy_3 = new Image();
+    
+
+    enemy_0.src = "enemy_0.png";
+    enemy_1.src = "enemy_1.png";
+    enemy_2.src = "enemy_2.png";
+    enemy_3.src = "enemy_3.png";
+
+    enemy_sprites = [enemy_0, enemy_1, enemy_2, enemy_3];
+
+    let torch_0 = new Image();
+    let torch_1 = new Image();
+
+    torch_0.src = "torch_0.png";
+    torch_1.src = "torch_1.png";
+
+    let flag = new Image();
+    flag.src = "flag.png";
+
+    let tree = new Image();
+    tree.src = "tree.png";
+    let little_tree = new Image();
+    little_tree.src = "little_tree.png";
+
+    //hitbox e colisão
+
+    function colide(a, b) {
+    return a.x < b.x + b.w &&
+           a.x + a.w > b.x &&
+           a.y < b.y + b.h &&
+           a.y + a.h > b.y;
+    }
+
+    function sigmoid(x) {
+        return 1 / (1 + Math.exp(-x));
+    }
+
+    var circle = function(x, y, radius, fillCircle) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI*2, false);
+        if (fillCircle){
+            ctx.fill();
+        }else{
+            ctx.stroke();
+        }
+    }
+    
+    class Warrior{
+        constructor(x, y, sprite){
+            this.x = x;
+            this.y = y;
+            this.vel = 2;
+            this.sprite = sprite;
+            this.status = 2;
+            this.width = 30;
+            this.cooldown = 0;
+            this.atacando_dir = 0;
+            this.atacando_esq = 0;
+            this.stamin = 4;
+        }
+
+        update(teclas, tempo){
+
+            if (this.cooldown > 0) {
+                this.cooldown--;
+            }
+
+            if (this.atacando_dir >0){
+                this.atacando_dir--;
+            }
+
+            if (this.atacando_esq >0){
+                this.atacando_esq--;
+            }
+
+            this.stamin = Math.min(4, Math.max(this.stamin + 0.01, 0));
+
+            
+            if (this.atacando_dir>0) {
+                this.status = 5;
+            }else if(this.atacando_esq>0) {
+                this.status = 6;
+            }else if(teclas["w"] && teclas["d"] &&  this.cooldown == 0 && this.stamin>=1) {
+                this.status = 5;
+                this.cooldown = 30;
+                this.atacando_dir = 10;
+                this.stamin--;
+
+            }else if(teclas["w"] && teclas["a"] && this.cooldown == 0 && this.stamin>=1) {
+                this.status = 6;
+                this.cooldown = 30;
+                this.atacando_esq = 10;
+                this.stamin--;
+            }else if(teclas["d"]) {
+                this.x += this.vel;
+                this.status = Math.floor(tempo / 20) % 2;
+            }else if(teclas["a"]) {
+                this.x -= this.vel;
+                this.status = 3 + Math.floor(tempo / 20) % 2;
+            }else{
+                this.status = 2;
+            }
+        }
+
+        getHitbox() {
+            if (this.status == 5){
+                return {
+                    x: this.x + 30, 
+                    y: this.y + 5,
+                    w: 20,
+                    h: 5
+                };
+            }else{
+                return {
+                    x: this.x - 20, 
+                    y: this.y + 5,
+                    w: 20,
+                    h: 5
+                };
+            }
+        }
+
+        draw(){
+            if(this.status == 0) {
+                ctx.drawImage(this.sprite[0], this.x, this.y, this.width, 30);
+            }else if(this.status == 1) {
+                ctx.drawImage(this.sprite[1], this.x, this.y, this.width, 30);
+            }else if(this.status == 2) {
+                ctx.drawImage(this.sprite[2], this.x, this.y, this.width, 30);
+            }else if(this.status == 3) {
+
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[0], -this.x - 30, this.y, this.width, 30);
+                ctx.restore();
+
+            }else if(this.status == 4) {
+
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[1], -this.x - 30, this.y, this.width, 30);
+                ctx.restore();
+
+            }else if(this.status == 5){
+                ctx.drawImage(this.sprite[3], this.x, this.y, 50, 30);
+            }else if(this.status == 6){
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[3], -this.x -30, this.y, 50, 30);
+                ctx.restore();
+            }
+
+            ctx.fillStyle = "Green";
+            ctx.fillRect(7, 30, this.stamin*20 , 10);
+            ctx.strokeStyle = "#000000";
+            for(var i = 0; i<4; i++){
+                ctx.strokeRect(7, 30, 80, 10);
+            }
+        }
+    }
+
+    class Enemy{
+        constructor(x, y, sprite){
+            this.x = x;
+            this.y = y;
+            this.vel = 1;
+            this.sprite = sprite;
+            this.status = 2;
+            this.vida = 1;
+
+        }
+
+        update(tempo, warrior){
+            if(this.vida>0){
+                if (this.x - warrior.x>=0 && this.x -warrior.x <150){
+                    this.x = this.x - this.vel;
+                    this.status = this.status = Math.floor(tempo / 20) % 2;
+                } else if (this.x - warrior.x<0 && this.x -warrior.x>-150){
+                    this.x = this.x + this.vel;
+                    this.status = 3 + Math.floor(tempo / 20) % 2;
+                } else if (this.x - warrior.x <= -150){
+                    this.status = 5;
+                } else {
+                    this.status = 2;
+                }
+            }else{
+                this.status = 6;
+            }
+
+        }
+
+        draw(){
+            
+            if(this.status == 0) {
+                ctx.drawImage(this.sprite[0], this.x, this.y, 30, 40);
+            }else if(this.status == 1) {
+                ctx.drawImage(this.sprite[1], this.x, this.y, 30, 40);
+            }else if(this.status == 2) {
+                ctx.drawImage(this.sprite[2], this.x, this.y, 30, 40);
+            }else if(this.status == 3) {
+
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[0], -this.x - 30, this.y, 30, 40);
+                ctx.restore();
+
+            }else if(this.status == 4) {
+
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[1], -this.x - 30, this.y, 30, 40);
+                ctx.restore();
+
+            }else if(this.status == 5){
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[2], -this.x - 30, this.y, 30, 40);
+                ctx.restore();
+            }else if (this.status == 6){
+                ctx.drawImage(this.sprite[3], this.x - 5, this.y + 12, 42, 28);
+            }
+            
+        }
+    }
+
+    
+    var drawSun = function(x, y, status){
+
+        if(status == 1) {
+            ctx.drawImage(sun_0, x, y, 100, 100);
+        }else{
+            ctx.drawImage(sun_1, x, y, 100, 100)
+        }
+    }
+
+    var drawTorch = function(x, y, status){
+
+        if(status == 1) {
+            ctx.drawImage(torch_0, x, y, 30, 30);
+        }else{
+            ctx.drawImage(torch_1, x, y, 30, 30)
+        }
+    }
+
+    var drawEye = function(x, y, warrior){
+
+        ctx.fillStyle = "White";
+        circle(x, y, 50, true);
+        let theta = Math.atan((x - warrior.x)/ (y - warrior.y));
+        ctx.fillStyle = "Red";
+        circle(x + 23*Math.sin(theta), y + 23*Math.cos(theta),25, true);
+        ctx.fillStyle = "black";
+        circle(x + 23*Math.sin(theta), y + 23*Math.cos(theta),15, true);
+        ctx.fillStyle = "#dddddd";
+        circle(x + 5 + 23*Math.sin(theta), y - 5 + 23*Math.cos(theta), 4, true);
+        
+    }
+
+    warrior_jhon = new Warrior(5,370, warrior_sprites);
+    enemy_karl = new Enemy(450, 360, enemy_sprites);
+    enemy_lee = new Enemy(350, 360, enemy_sprites);
+    enemy_albert = new Enemy(450, 360, enemy_sprites);
+
+    document.addEventListener("keydown", (event) => {
+        teclas[event.key] = true;
+    });
+
+    document.addEventListener("keyup", (event) => {
+        teclas[event.key] = false;
+    });
+
+    setInterval(function() {
+
+        ctx.clearRect(0,0,600,600);
+
+        tempo++;
+
+
+        if (mapa == 0){
+
+            ctx.fillStyle = "SkyBlue";
+            ctx.fillRect(0,0,600,600);
+
+            drawSun(150, 50, Math.floor(tempo / 60) % 2);
+
+            ctx.fillStyle = "Green";
+            ctx.fillRect(0,400,600,300);
+
+            ctx.drawImage(tree, 420, 430, 130, 130);
+            ctx.drawImage(little_tree, 40, 430, 40, 32);
+            ctx.drawImage(little_tree, 140, 450, 40, 32);
+            ctx.drawImage(tree, 200, 270, 130, 130);
+            ctx.drawImage(little_tree, 140, 450, 40, 32);
+            ctx.drawImage(little_tree, 350, 368 , 40, 32);
+            ctx.drawImage(little_tree, 70, 368 , 40, 32);
+            ctx.drawImage(little_tree, 500, 410 , 40, 32);
+            ctx.drawImage(tree, 40, 490, 130, 130);
+            ctx.drawImage(little_tree, 320, 490, 40, 32);
+            ctx.drawImage(little_tree, 510, 368 , 40, 32);
+
+
+        }else if(mapa == 1){
+            ctx.fillStyle = "SkyBlue";
+            ctx.fillRect(0,0,600,600);
+
+            ctx.fillStyle = "Green";
+            ctx.fillRect(0,400,300,300);
+
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(300,400,300,300);
+
+            ctx.fillStyle = "#333333";
+            ctx.fillRect(300, 250, 300, 150);
+
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(300,220, 300,30);
+            ctx.strokeStyle = "Black";
+            ctx.strokeRect(300,220, 300,30);
+
+            for(var i = 0; i<11; i++){
+                for(var j = 0; j<7; j++){
+                    ctx.strokeStyle = "Black";
+                    ctx.strokeRect(300 + i *30,400 + j*30 ,30, 30);
+                }
+            }
+
+            for(var i= 0; i<4; i++){
+                ctx.fillStyle = "Gray";
+                ctx.fillRect(300 + 75*i,250, 40,150);
+                ctx.strokeStyle = "Black";
+                ctx.strokeRect(300 + 75*i,250, 40,150);
+            }
+
+            drawSun(150, 50, Math.floor(tempo / 60) % 2);
+
+        }else if(mapa == 2){
+
+            ctx.fillStyle = "#333333";
+            ctx.fillRect(0,0,600,600);
+
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(0,400,600,300);
+
+            for(var i = 0; i<21; i++){
+                for(var j = 0; j<7; j++){
+                    ctx.strokeStyle = "Black";
+                    ctx.strokeRect(i *30,400 + j*30 ,30, 30);
+                }
+            }
+
+            for(var i= 0; i<8; i++){
+                ctx.fillStyle = "Gray";
+                ctx.fillRect(80*i,0, 30,400);
+                ctx.strokeStyle = "Black";
+                ctx.strokeRect(80*i,0, 30,400);
+                drawTorch(80*i, 350, Math.floor(tempo / 5) % 2);
+                ctx.drawImage(flag, 80*i + 40, 200, 30, 30);
+            }
+
+            enemy_karl.update(tempo, warrior_jhon);
+            enemy_karl.draw();
+
+            enemy_lee.update(tempo, warrior_jhon);
+            enemy_lee.draw();
+
+            if (warrior_jhon.status == 5 || warrior_jhon.status == 6) {
+                let hit = warrior_jhon.getHitbox();
+
+                let enemyBox_karl = {
+                    x: enemy_karl.x,
+                    y: enemy_karl.y,
+                    w: 30,
+                    h: 40
+                };
+
+                let enemyBox_lee = {
+                    x: enemy_lee.x,
+                    y: enemy_lee.y,
+                    w: 30,
+                    h: 40
+                };
+
+                if (colide(hit, enemyBox_karl)) {
+                    enemy_karl.vida--;
+                    console.log("ACERTOU KARL!");
+                }
+
+                if (colide(hit, enemyBox_lee)) {
+                    enemy_lee.vida--;
+                    console.log("ACERTOU LEE!");
+                }
+
+                warrior_jhon.status = 2; 
+            }
+        } else if (mapa == 3){
+
+            ctx.fillStyle = "#333333";
+            ctx.fillRect(0,0,600,600);
+
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(0,400,600,300);
+
+            for(var i = 0; i<21; i++){
+                for(var j = 0; j<7; j++){
+                    ctx.strokeStyle = "Black";
+                    ctx.strokeRect(i *30,400 + j*30 ,30, 30);
+                }
+            }
+
+            for(var i= 0; i<8; i++){
+                ctx.fillStyle = "Gray";
+                ctx.fillRect(80*i,0, 30,400);
+                ctx.strokeStyle = "Black";
+                ctx.strokeRect(80*i,0, 30,400);
+                drawTorch(80*i, 350, Math.floor(tempo / 5) % 2);
+            }
+
+            drawEye(300, 100, warrior_jhon);
+
+        }
+
+        warrior_jhon.update(teclas, tempo);
+        warrior_jhon.draw();
+
+        if(warrior_jhon.x >570){
+
+            if (mapa == num_cenarios-1 || (mapa == 2 && enemy_karl.status !=6 && enemy_lee.status != 6)){
+                warrior_jhon.x =570;
+            }else{
+                warrior_jhon.x = 5;
+                mapa++;
+            }
+            
+        }
+
+        if (warrior_jhon.x < 0){
+            if (mapa == 0 || (mapa == 2 && enemy_karl.status !=6 && enemy_lee.status != 6)){
+                warrior_jhon.x = 0;
+            }else{
+                warrior_jhon.x = 565;
+                mapa--;
+                if(mapa<0){
+                    mapa = num_cenarios - 1;
+                }
+            }
+        }
+
+    }, 16); 
+
+</script>
+    </body>
+</html>
