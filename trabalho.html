@@ -68,8 +68,38 @@
     let attack_sound = new Audio("sounds/attack_sound.wav");
     let defended_attack_sound = new Audio("sounds/defended_attack_sound.wav");
     let miss_attack_sound = new Audio("sounds/miss_attack_sound.wav");
+    let soft_ambient_sound = new Audio("sounds/soft_ambient_sound.mp3");
+    let combat_sound = new Audio("sounds/battle_sound.mp3");
+
+    soft_ambient_sound.loop = true;
+    combat_sound.loop = true;
+
+    soft_ambient_sound.volume = 0.0;
+    combat_sound.volume = 0.25;
+    attack_sound.volume = 0.2;
+    defended_attack_sound.volume = 0.2;
+    miss_attack_sound.volume = 0.2;
+
+    let musicaAtual = null;
 
     //hitbox e colisão
+
+
+    function trocarMusica(novaMusica) {
+    if (musicaAtual === novaMusica) return;
+
+        if (musicaAtual) {
+            musicaAtual.pause();
+            musicaAtual.currentTime = 0;
+        }
+
+        musicaAtual = novaMusica;
+        musicaAtual.volume = 0.03;
+        if(musicaAtual != soft_ambient_sound){
+            musicaAtual.volume = 0.25;
+        }
+        musicaAtual.play();
+    }
 
     function colide(a, b) {
     return a.x < b.x + b.w &&
@@ -348,6 +378,20 @@
         teclas[event.key] = false;
     });
 
+    document.addEventListener("keydown", (event) => {
+        trocarMusica(soft_ambient_sound);
+
+        soft_ambient_sound.currentTime = 0;
+        soft_ambient_sound.play();
+    }, { once: true });
+
+
+    function emCombate() {
+        return mapa == 2 && (
+            enemy_karl.vida > 0 || enemy_lee.vida > 0
+        );
+    }
+
     setInterval(function() {
 
         ctx.clearRect(0,0,600,600);
@@ -490,6 +534,12 @@
 
         warrior_jhon.update(teclas, tempo);
         warrior_jhon.draw();
+
+        if (emCombate()) {
+            trocarMusica(combat_sound);
+        } else {
+            trocarMusica(soft_ambient_sound);
+        }
 
         if(warrior_jhon.x >570){
 
