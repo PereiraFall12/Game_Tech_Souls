@@ -63,6 +63,12 @@
     let little_tree = new Image();
     little_tree.src = "images/little_tree.png";
 
+    //Sons
+
+    let attack_sound = new Audio("sounds/attack_sound.wav");
+    let defended_attack_sound = new Audio("sounds/defended_attack_sound.wav");
+    let miss_attack_sound = new Audio("sounds/miss_attack_sound.wav");
+
     //hitbox e colisão
 
     function colide(a, b) {
@@ -127,11 +133,18 @@
                 this.atacando_dir = 10;
                 this.stamin--;
 
+                miss_attack_sound.currentTime = 0;
+                miss_attack_sound.play();
+
             }else if(teclas["w"] && teclas["a"] && this.cooldown == 0 && this.stamin>=1) {
                 this.status = 6;
                 this.cooldown = 30;
                 this.atacando_esq = 10;
                 this.stamin--;
+
+                miss_attack_sound.currentTime = 0;
+                miss_attack_sound.play();
+
             }else if(teclas["d"]) {
                 this.x += this.vel;
                 this.status = Math.floor(tempo / 20) % 2;
@@ -439,6 +452,9 @@
                         }else{
                             map_3_enemies[i].knockback = -4;
                         }
+
+                        defended_attack_sound.currentTime = 0.19;
+                        defended_attack_sound.play();
                     }
                 }
                 warrior_jhon.status = 2; 
