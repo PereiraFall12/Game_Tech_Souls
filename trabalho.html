@@ -331,6 +331,93 @@
         }
     }
 
+    class Ogre_Enemy{
+        constructor(x, y, sprite){
+            this.x = x;
+            this.y = y;
+            this.vel = 1;
+            this.sprite = sprite;
+            this.status = 2;
+            this.vida = 2;
+            this.w = 30;
+            this.h = 40;
+            this.hitBox = {x:this.x, y: this.y, w: this.w, h:this.h};
+            this.invecibilidade = 0;
+            this.knockback = 0;
+
+        }
+
+        update(tempo, warrior){
+
+            if(this.invecibilidade>0){
+                this.invecibilidade--;
+            }
+
+            if(this.knockback >0){
+                this.knockback = this.knockback - 0.25;
+            }
+
+            if(this.knockback <0){
+                this.knockback = this.knockback + 0.25;
+            }
+
+            if(this.vida>0){
+                if (this.x - warrior.x>=0 && this.x -warrior.x <150){
+                    this.x = this.x - this.vel;
+                    this.status = this.status = Math.floor(tempo / 20) % 3;
+                } else if (this.x - warrior.x<0 && this.x -warrior.x>-150){
+                    this.x = this.x + this.vel;
+                    this.status = 3 + Math.floor(tempo / 20) % 3;
+                } else if (this.x - warrior.x <= -150){
+                    this.status = 5;
+                } else {
+                    this.status = 2;
+                }
+                
+                this.x = this.x + this.knockback;
+                this.hitBox.x = this.x;
+                this.hitBox.y = this.y;
+            }else{
+                this.status = 6;
+            }
+
+        }
+
+        draw(){
+            
+            if(this.status == 0) {
+                ctx.drawImage(this.sprite[0], this.x, this.y, 30, 40);
+            }else if(this.status == 1) {
+                ctx.drawImage(this.sprite[1], this.x, this.y, 30, 40);
+            }else if(this.status == 2) {
+                ctx.drawImage(this.sprite[2], this.x, this.y, 30, 40);
+            }else if(this.status == 3) {
+
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[0], -this.x - 30, this.y, 30, 40);
+                ctx.restore();
+
+            }else if(this.status == 4) {
+
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[1], -this.x - 30, this.y, 30, 40);
+                ctx.restore();
+
+            }else if(this.status == 5){
+                ctx.save();
+                ctx.scale(-1, 1); 
+                ctx.drawImage(this.sprite[2], -this.x - 30, this.y, 30, 40);
+                ctx.restore();
+                
+            }else if (this.status == 6){
+                ctx.drawImage(this.sprite[3], this.x - 5, this.y + 12, 42, 28);
+            }
+            
+        }
+    }
+
     
     var drawSun = function(x, y, status){
 
