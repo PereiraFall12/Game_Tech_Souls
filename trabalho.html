@@ -703,7 +703,16 @@
 
         if(warrior_jhon.x >570){
 
-            if (mapa == num_cenarios-1 || (mapa == 2 && enemy_karl.status !=6 && enemy_lee.status != 6)){
+
+            let pass_edge = true;
+
+            for(var i = 0; i<enemies_list.length; i++){
+                if(enemies_list[i].vida>0 && enemies_list[i].map == mapa){
+                    pass_edge = false;
+                }
+            }
+
+            if (pass_edge == false || mapa == num_cenarios -1){
                 warrior_jhon.x =570;
             }else{
                 warrior_jhon.x = 5;
@@ -713,14 +722,20 @@
         }
 
         if (warrior_jhon.x < 0){
-            if (mapa == 0 || (mapa == 2 && enemy_karl.status !=6 && enemy_lee.status != 6)){
+
+            let pass_edge = true;
+
+            for(var i = 0; i<enemies_list.length; i++){
+                if(enemies_list[i].vida>0 && enemies_list[i].map == mapa){
+                    pass_edge = false;
+                }
+            }
+            
+            if (pass_edge == false || mapa == 0){
                 warrior_jhon.x = 0;
             }else{
-                warrior_jhon.x = 565;
+                warrior_jhon.x = 570;
                 mapa--;
-                if(mapa<0){
-                    mapa = num_cenarios - 1;
-                }
             }
         }
 
