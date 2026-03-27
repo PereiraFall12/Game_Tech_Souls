@@ -260,7 +260,7 @@
     }
 
     class Enemy{
-        constructor(x, y, sprite){
+        constructor(x, y, sprite, map){
             this.x = x;
             this.y = y;
             this.vel = 1;
@@ -272,6 +272,7 @@
             this.hitBox = {x:this.x, y: this.y, w: this.w, h:this.h};
             this.invecibilidade = 0;
             this.knockback = 0;
+            this.map = map;
 
         }
 
@@ -346,7 +347,7 @@
     }
 
     class Ogre_Enemy{
-        constructor(x, y, sprite){
+        constructor(x, y, sprite, map){
             this.x = x;
             this.y = y;
             this.vel = 1;
@@ -360,6 +361,7 @@
             this.knockback = 0;
             this.atacando = 0;
             this.atacando_2 = 0;
+            this.map = map;
 
         }
 
@@ -517,11 +519,12 @@
     }
 
     warrior_jhon = new Warrior(5,370, warrior_sprites);
-    enemy_karl = new Enemy(450, 360, enemy_sprites);
-    enemy_lee = new Enemy(350, 360, enemy_sprites);
-    enemy_albert = new Enemy(450, 360, enemy_sprites);
-    map_3_enemies = [enemy_karl, enemy_lee];
-    ogre_jorge = new Ogre_Enemy(360, 360, ogre_sprites);
+    enemy_karl = new Enemy(450, 360, enemy_sprites, 2);
+    enemy_lee = new Enemy(350, 360, enemy_sprites, 2);
+    //enemy_albert = new Enemy(450, 360, enemy_sprites, 2);
+    ogre_jorge = new Ogre_Enemy(360, 360, ogre_sprites, 1);
+
+    enemies_list = [enemy_karl, enemy_lee, ogre_jorge];
 
     document.addEventListener("keydown", (event) => {
         teclas[event.key] = true;
@@ -536,6 +539,7 @@
 
         soft_ambient_sound.currentTime = 0;
         soft_ambient_sound.play();
+
     }, { once: true });
 
 
@@ -609,9 +613,6 @@
 
             drawSun(150, 50, Math.floor(tempo / 60) % 2);
 
-            ogre_jorge.update(tempo, warrior_jhon);
-            ogre_jorge.draw();
-
         }else if(mapa == 2){
 
             ctx.fillStyle = "#333333";
@@ -636,31 +637,6 @@
                 ctx.drawImage(flag, 80*i + 40, 200, 30, 30);
             }
 
-            for(var i = 0; i<map_3_enemies.length; i++){
-                map_3_enemies[i].update(tempo, warrior_jhon);
-                map_3_enemies[i].draw();
-
-            }
-
-            if (warrior_jhon.status == 5 || warrior_jhon.status == 6) {
-                let hit = warrior_jhon.getHitbox();
-
-                for(var i = 0; i<map_3_enemies.length; i++){
-                    if(colide(hit, map_3_enemies[i].hitBox) && map_3_enemies[i].invecibilidade == 0){
-                        map_3_enemies[i].vida--;
-                        map_3_enemies[i].invecibilidade = 40;
-                        if(map_3_enemies[i].x - warrior_jhon.x >= 0){
-                            map_3_enemies[i].knockback = 4;
-                        }else{
-                            map_3_enemies[i].knockback = -4;
-                        }
-
-                        defended_attack_sound.currentTime = 0.19;
-                        defended_attack_sound.play();
-                    }
-                }
-                warrior_jhon.status = 2; 
-            }
         } else if (mapa == 3){
 
             ctx.fillStyle = "#333333";
@@ -686,6 +662,34 @@
 
             drawEye(300, 100, warrior_jhon);
 
+        }
+
+
+        if (warrior_jhon.status == 5 || warrior_jhon.status == 6) {
+            let hit = warrior_jhon.getHitbox();
+
+            for(var i = 0; i<enemies_list.length; i++){
+                if(colide(hit, enemies_list[i].hitBox) && enemies_list[i].invecibilidade == 0 && enemies_list[i].map == mapa){
+                    enemies_list[i].vida--;
+                    enemies_list[i].invecibilidade = 40;
+                    if(enemies_list[i].x - warrior_jhon.x >= 0){
+                        enemies_list[i].knockback = 4;
+                    }else{
+                        enemies_list[i].knockback = -4;
+                    }
+
+                    defended_attack_sound.currentTime = 0.19;
+                    defended_attack_sound.play();
+                }
+            }
+            warrior_jhon.status = 2; 
+        }
+
+        for(var i = 0; i<enemies_list.length; i++){
+            if(enemies_list[i].map == mapa){
+                enemies_list[i].update(tempo, warrior_jhon);
+                enemies_list[i].draw();
+            }
         }
 
         warrior_jhon.update(teclas, tempo);
