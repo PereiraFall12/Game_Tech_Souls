@@ -344,6 +344,8 @@
             this.hitBox = {x:this.x, y: this.y, w: this.w, h:this.h};
             this.invecibilidade = 0;
             this.knockback = 0;
+            this.atacando = 0;
+            this.atacando_2 = 0;
 
         }
 
@@ -361,8 +363,29 @@
                 this.knockback = this.knockback + 0.25;
             }
 
+            if(this.atacando > 0){
+                this.atacando--;
+            }
+
+            if(this.atacando_2 >0){
+                this.atacando_2--;
+            }
+
             if(this.vida>0){
-                if (this.x - warrior.x>=0 && this.x -warrior.x <150){
+
+                if ((this.x - warrior.x>=0  && this.x - warrior.x < 30 && this.atacando == 0) || (this.atacando>0 && this.status == 6)){
+                    this.atacando = 30;
+                    this.status = 6; //carregando ataque para esquerda
+                }else if((this.atacando == 0 && this.status == 6) ||(this.atacando_2>0 && this.status == 7) ){
+                    this.atacando_2 = 30;
+                    this.status = 7; //ataque para esquerda
+                }else if ((this.x - warrior.x<=0  && this.x - warrior.x > -30 && this.atacando == 0 )|| (this.atacando>0 && this.status == 8) ){
+                    this.atacando = 30;
+                    this.status = 8; //carregando ataque para esquerda
+                }else if((this.atacando == 0 && this.status == 8) || (this.atacando_2>0 && this.status == 9)){
+                    this.atacando_2 = 30;
+                    this.status = 9; //ataque para esquerda
+                }else if (this.x - warrior.x>=0 && this.x -warrior.x <150){
                     this.x = this.x - this.vel;
                     this.status = this.status = Math.floor(tempo / 20) % 3;
                 } else if (this.x - warrior.x<0 && this.x -warrior.x>-150){
@@ -378,7 +401,7 @@
                 this.hitBox.x = this.x;
                 this.hitBox.y = this.y;
             }else{
-                this.status = 6;
+                this.status = 10; //morto
             }
 
         }
@@ -410,8 +433,8 @@
                 ctx.scale(-1, 1); 
                 ctx.drawImage(this.sprite[2], -this.x - 30, this.y, 30, 40);
                 ctx.restore();
-                
-            }else if (this.status == 6){
+
+            }else if (this.status == 10){
                 ctx.drawImage(this.sprite[3], this.x - 5, this.y + 12, 42, 28);
             }
             
