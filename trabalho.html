@@ -40,13 +40,27 @@
     let enemy_1 = new Image();
     let enemy_2 = new Image();
     let enemy_3 = new Image();
-    
 
     enemy_0.src = "images/enemy_0.png";
     enemy_1.src = "images/enemy_1.png";
     enemy_2.src = "images/enemy_2.png";
     enemy_3.src = "images/enemy_3.png";
 
+    let ogre_0 = new Image();
+    let ogre_1 = new Image();
+    let ogre_2 = new Image();
+    let ogre_3 = new Image();
+    let ogre_4 = new Image();
+    let ogre_5 = new Image();
+
+    ogre_0.src = "images/ogre_walking_0.png";
+    ogre_1.src = "images/ogre_walking_1.png";
+    ogre_2.src = "images/ogre_walking_2.png";
+    ogre_3.src = "images/ogre_attacking.png";
+    ogre_4.src = "images/attacking_2_ogre.png";
+    ogre_5.src = "images/dead_ogre.png";
+
+    ogre_sprites = [ogre_0, ogre_1, ogre_2, ogre_3, ogre_4, ogre_5];
     enemy_sprites = [enemy_0, enemy_1, enemy_2, enemy_3];
 
     let torch_0 = new Image();
@@ -373,17 +387,25 @@
 
             if(this.vida>0){
 
-                if ((this.x - warrior.x>=0  && this.x - warrior.x < 30 && this.atacando == 0) || (this.atacando>0 && this.status == 6)){
+                if ((this.x - warrior.x>=0  && this.x - warrior.x < 30 && this.atacando == 0 && this.status!=6 && this.status!=8 && this.status!=7 && this.status!=9 )){ // começa a animação
                     this.atacando = 30;
                     this.status = 6; //carregando ataque para esquerda
-                }else if((this.atacando == 0 && this.status == 6) ||(this.atacando_2>0 && this.status == 7) ){
+                }else if (this.atacando>0 && this.status == 6){ //durante a animação
+                    this.status = 6; //carregando ataque para esquerda
+                }else if((this.atacando == 0 && this.status == 6)){ //começa a animação 
                     this.atacando_2 = 30;
                     this.status = 7; //ataque para esquerda
-                }else if ((this.x - warrior.x<=0  && this.x - warrior.x > -30 && this.atacando == 0 )|| (this.atacando>0 && this.status == 8) ){
+                }else if(this.atacando_2>0 && this.status == 7){ // durante a animação
+                    this.status = 7; //ataque para esquerda
+                }else if ((this.x - warrior.x<=0  && this.x - warrior.x > -30 && this.atacando == 0 && this.status!=6 && this.status!=8 && this.status!=7 && this.status!=9)){ // começa a animação
                     this.atacando = 30;
                     this.status = 8; //carregando ataque para esquerda
-                }else if((this.atacando == 0 && this.status == 8) || (this.atacando_2>0 && this.status == 9)){
+                }else if ( (this.atacando>0 && this.status == 8)){ // durante a animação
+                    this.status = 8; //carregando ataque para esquerda
+                }else if((this.atacando == 0 && this.status == 8)){ // começa a animação
                     this.atacando_2 = 30;
+                    this.status = 9; //ataque para esquerda
+                }else if(this.atacando_2>0 && this.status == 9){ // durante a animação
                     this.status = 9; //ataque para esquerda
                 }else if (this.x - warrior.x>=0 && this.x -warrior.x <150){
                     this.x = this.x - this.vel;
@@ -438,24 +460,24 @@
                 ctx.drawImage(this.sprite[3], this.x, this.y, 30, 40);
 
             }else if (this.status == 7){
-                ctx.drawImage(this.sprite[4], this.x, -this.y - 30, 60, 40);
+                ctx.drawImage(this.sprite[4], this.x-30, this.y, 60, 40);
                 
             }else if (this.status == 8){
 
                 ctx.save();
-                ctx.scale(-1, 1);d
-                ctx.drawImage(this.sprite[3], this.x, this.y, 30, 40);
+                ctx.scale(-1, 1);
+                ctx.drawImage(this.sprite[3], -this.x-30, this.y, 30, 40);
                 ctx.restore();
 
             }else if (this.status == 9){
 
                 ctx.save();
                 ctx.scale(-1, 1);
-                ctx.drawImage(this.sprite[4], this.x, -this.y - 30, 60, 40);
+                ctx.drawImage(this.sprite[4], -this.x-60, this.y, 60, 40);
                 ctx.restore();
                 
             }else if (this.status == 10){
-                ctx.drawImage(this.sprite[5], this.x - 5, this.y + 12, 42, 28);
+                ctx.drawImage(this.sprite[5], this.x - 5, this.y, 60, 40);
             }
             
         }
@@ -499,6 +521,7 @@
     enemy_lee = new Enemy(350, 360, enemy_sprites);
     enemy_albert = new Enemy(450, 360, enemy_sprites);
     map_3_enemies = [enemy_karl, enemy_lee];
+    ogre_jorge = new Ogre_Enemy(360, 360, ogre_sprites);
 
     document.addEventListener("keydown", (event) => {
         teclas[event.key] = true;
@@ -585,6 +608,9 @@
             }
 
             drawSun(150, 50, Math.floor(tempo / 60) % 2);
+
+            ogre_jorge.update(tempo, warrior_jhon);
+            ogre_jorge.draw();
 
         }else if(mapa == 2){
 
