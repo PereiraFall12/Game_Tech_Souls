@@ -77,6 +77,12 @@
     let little_tree = new Image();
     little_tree.src = "images/little_tree.png";
 
+    let bonfire_image_0 =new Image();
+    let bonfire_image_1 =new Image();
+    bonfire_image_0.src = "images/bonfire_0.png";
+    bonfire_image_1.src = "images/bonfire_1.png";
+    bonfire_sprites = [bonfire_image_0, bonfire_image_1];
+
     //Sons
 
     let attack_sound = new Audio("sounds/attack_sound.wav");
@@ -149,8 +155,8 @@
             this.sprites = sprites;
             this.map = map;
             this.status = 0;
-            this.h = 60;
-            this.w = 50;
+            this.h = 20;
+            this.w = 35;
         }
 
         update(tempo){
@@ -176,6 +182,7 @@
             this.stamin = 4;
             this.vida = 30;
             this.vidaMax = 30;
+            this.lastBonfire = null;
         }
 
         update(teclas, tempo){
@@ -559,6 +566,8 @@
     enemy_lee = new Enemy(350, 360, enemy_sprites, 2);
     //enemy_albert = new Enemy(450, 360, enemy_sprites, 2);
     ogre_jorge = new Ogre_Enemy(360, 360, ogre_sprites, 1);
+    bonfire_zuli = new Bonfire(200, 380, bonfire_sprites, 1);
+    bonfires = [bonfire_zuli];
 
     enemies_list = [enemy_karl, enemy_lee, ogre_jorge];
 
@@ -699,6 +708,14 @@
             drawEye(300, 100, warrior_jhon);
 
         }
+
+        for(var i = 0; i<bonfires.length; i++){
+            if(bonfires[i].map == mapa){
+                bonfires[i].update(tempo);
+                bonfires[i].draw();
+            }
+        }
+
 
 
         if (warrior_jhon.status == 5 || warrior_jhon.status == 6) {
