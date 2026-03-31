@@ -135,6 +135,34 @@
             ctx.stroke();
         }
     }
+
+    function verify_proximity(warrior, bonfire){
+        if(Math.abs(warrior.x < bonfire.x)<= 40){
+            warrior.lastBonfire = bonfire;
+        }
+    }
+
+    class Bonfire{
+        constructor(x, y, sprites, map){
+            this.x = x;
+            this.y = y;
+            this.sprites = sprites;
+            this.map = map;
+            this.status = 0;
+            this.h = 60;
+            this.w = 50;
+        }
+
+        update(tempo){
+            this.status = Math.floor(tempo/15)%2;
+        }
+
+        draw(){
+            ctx.drawImage(this.sprites[this.status], this.x, this.y, this.w, this.h);
+        }
+
+
+    }
     
     class Warrior{
         constructor(x, y, sprite){
