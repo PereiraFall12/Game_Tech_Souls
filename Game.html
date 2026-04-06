@@ -712,9 +712,11 @@
             if(bonfires[i].map == mapa){
                 bonfires[i].update(tempo);
                 bonfires[i].draw();
+                if(teclas["c"]){
+                    verify_proximity(warrior_jhon, bonfires[i]);
+                }
             }
         }
-
 
 
         if (warrior_jhon.status == 5 || warrior_jhon.status == 6) {
