@@ -104,7 +104,6 @@
 
     //hitbox e colisão
 
-
     function trocarMusica(novaMusica) {
     if (musicaAtual === novaMusica) return;
 
@@ -114,7 +113,7 @@
         }
 
         musicaAtual = novaMusica;
-        musicaAtual.volume = 0.03;
+        musicaAtual.volume = 0.3;
         if(musicaAtual != soft_ambient_sound){
             musicaAtual.volume = 0.25;
         }
