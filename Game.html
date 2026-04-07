@@ -147,6 +147,31 @@
         }
     }
 
+    function die(warrior) {
+        alert("You died"); // Feedback visual clássico
+
+        if (warrior.lastBonfire) {
+            mapa = warrior.lastBonfire.map;
+            warrior.x = warrior.lastBonfire.x;
+            warrior.y = warrior.lastBonfire.y;
+        } else {
+            // Caso não tenha tocado em nenhuma fogueira, volta ao início
+            mapa = 0;
+            warrior.x = 5;
+            warrior.y = 370;
+        }
+
+        // Restaura a vida e stamina
+        warrior.vida = warrior.vidaMax;
+        warrior.stamin = warrior.staminMax;
+        warrior.invencibilidade = 0;
+
+        // Opcional: Resetar a vida de todos os inimigos do mapa ao morrer
+        enemies_list.forEach(e => {
+            e.vida = 2; 
+        });
+    }
+
     class Bonfire{
         constructor(x, y, sprites, map){
             this.x = x;
@@ -180,6 +205,7 @@
             this.atacando_dir = 0;
             this.atacando_esq = 0;
             this.stamin = 4;
+            this.staminMax = 4; 
             this.vida = 30;
             this.vidaMax = 30;
             this.lastBonfire = null;
@@ -205,7 +231,7 @@
                 this.invencibilidade--;
             }
 
-            this.stamin = Math.min(4, Math.max(this.stamin + 0.01, 0));
+            this.stamin = Math.min(this.staminMax, Math.max(this.stamin + 0.01, 0));
 
             
             if (this.atacando_dir>0) {
@@ -735,7 +761,6 @@
                     }else{
                         enemies_list[i].knockback = -4;
                     }
-
                     defended_attack_sound.currentTime = 0.19;
                     defended_attack_sound.play();
                 }
@@ -760,18 +785,22 @@
             let bodyWarrior = { x: warrior_jhon.x, y: warrior_jhon.y, w: warrior_jhon.w, h: warrior_jhon.h };
 
             if (colide(bodyInimigo, bodyWarrior) && warrior_jhon.invencibilidade == 0 && (enemies_list[i].status == 7 ||enemies_list[i].status == 9)) {
-                warrior_jhon.vida -= 2; 
+                warrior_jhon.vida -= 10; 
                 warrior_jhon.invencibilidade = 30; // Tempo de segurança
 
                 attack_sound.currentTime = 0;
                 attack_sound.play();
                 
+                }
             }
-}
         }
 
         warrior_jhon.update(teclas, tempo);
         warrior_jhon.draw();
+
+        if (warrior_jhon.vida <= 0) {
+            die(warrior_jhon);
+        }
 
         if (emCombate()) {
             trocarMusica(combat_sound);
