@@ -219,7 +219,6 @@
         if (warrior.lastBonfire) {
             mapa = warrior.lastBonfire.map;
             warrior.x = warrior.lastBonfire.x;
-            warrior.y = warrior.lastBonfire.y;
         } else {
             // Caso não tenha tocado em nenhuma fogueira, volta ao início
             mapa = 0;
@@ -660,11 +659,16 @@
 
     warrior_jhon = new Warrior(5,370, warrior_sprites);
     //enemy_albert = new Enemy(450, 360, enemy_sprites, 2);
+    ogre_2 = new Ogre_Enemy(360, 360, ogre_sprites, 2);
+    ogre_3 = new Ogre_Enemy(260, 360, ogre_sprites, 2);
+    ogre_4 = new Ogre_Enemy(160, 360, ogre_sprites, 2);
     ogre_jorge = new Ogre_Enemy(360, 360, ogre_sprites, 1);
-    bonfire_zuli = new Bonfire(200, 380, bonfire_sprites, 1);
-    bonfires = [bonfire_zuli];
 
-    enemies_list = [ogre_jorge];
+    bonfire_zuli = new Bonfire(200, 380, bonfire_sprites, 1);
+
+
+    bonfires = [bonfire_zuli];
+    enemies_list = [ogre_jorge, ogre_2, ogre_3, ogre_4];
 
     document.addEventListener("keydown", (event) => {
         teclas[event.key] = true;
