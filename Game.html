@@ -449,14 +449,14 @@
                     this.status = 7; //ataque para esquerda
                 }else if ((this.x - warrior.x<=0  && this.x - warrior.x > -30 && this.atacando == 0 && this.status!=6 && this.status!=8 && this.status!=7 && this.status!=9)){ // começa a animação
                     this.atacando = 30;
-                    this.status = 8; //carregando ataque para esquerda
+                    this.status = 8; //carregando ataque para direita
                 }else if ( (this.atacando>0 && this.status == 8)){ // durante a animação
-                    this.status = 8; //carregando ataque para esquerda
+                    this.status = 8; //carregando ataque para direita
                 }else if((this.atacando == 0 && this.status == 8)){ // começa a animação
                     this.atacando_2 = 30;
-                    this.status = 9; //ataque para esquerda
+                    this.status = 9; //ataque para direita
                 }else if(this.atacando_2>0 && this.status == 9){ // durante a animação
-                    this.status = 9; //ataque para esquerda
+                    this.status = 9; //ataque para direita
                 }else if (this.x - warrior.x>=0 && this.x -warrior.x <150){
                     this.x = this.x - this.vel;
                     this.status = this.status = Math.floor(tempo / 20) % 3;
@@ -523,7 +523,7 @@
 
                 ctx.save();
                 ctx.scale(-1, 1);
-                ctx.drawImage(this.sprite[4], -this.x-this.attack_range + this.w, this.y, this.attack_range + this.w, this.h);
+                ctx.drawImage(this.sprite[4], -this.x-this.attack_range - this.w, this.y, this.attack_range + this.w, this.h);
                 ctx.restore();
                 
             }else if (this.status == 10){
@@ -567,14 +567,12 @@
     }
 
     warrior_jhon = new Warrior(5,370, warrior_sprites);
-    enemy_karl = new Enemy(450, 360, enemy_sprites, 2);
-    enemy_lee = new Enemy(350, 360, enemy_sprites, 2);
     //enemy_albert = new Enemy(450, 360, enemy_sprites, 2);
     ogre_jorge = new Ogre_Enemy(360, 360, ogre_sprites, 1);
     bonfire_zuli = new Bonfire(200, 380, bonfire_sprites, 1);
     bonfires = [bonfire_zuli];
 
-    enemies_list = [enemy_karl, enemy_lee, ogre_jorge];
+    enemies_list = [ogre_jorge];
 
     document.addEventListener("keydown", (event) => {
         teclas[event.key] = true;
@@ -724,7 +722,7 @@
             }
         }
 
-
+        //Ataque do jogador
         if (warrior_jhon.status == 5 || warrior_jhon.status == 6) {
             let hit = warrior_jhon.getHitbox();
 
@@ -745,11 +743,31 @@
             warrior_jhon.status = 2; 
         }
 
+        //atualização do bot
         for(var i = 0; i<enemies_list.length; i++){
             if(enemies_list[i].map == mapa){
                 enemies_list[i].update(tempo, warrior_jhon);
                 enemies_list[i].draw();
             }
+        }
+
+        //Ataque do inimigo
+        for(var i = 0; i<enemies_list.length; i++){
+            if (enemies_list[i].map == mapa && enemies_list[i].vida > 0) {
+            
+            // Inimigo ataca Warrior (Novo)
+            let bodyInimigo = { x: enemies_list[i].x, y: enemies_list[i].y, w: enemies_list[i].w, h: enemies_list[i].h };
+            let bodyWarrior = { x: warrior_jhon.x, y: warrior_jhon.y, w: warrior_jhon.w, h: warrior_jhon.h };
+
+            if (colide(bodyInimigo, bodyWarrior) && warrior_jhon.invencibilidade == 0 && (enemies_list[i].status == 7 ||enemies_list[i].status == 9)) {
+                warrior_jhon.vida -= 2; 
+                warrior_jhon.invencibilidade = 30; // Tempo de segurança
+
+                attack_sound.currentTime = 0;
+                attack_sound.play();
+                
+            }
+}
         }
 
         warrior_jhon.update(teclas, tempo);
