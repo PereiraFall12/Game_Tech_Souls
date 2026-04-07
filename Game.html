@@ -2,9 +2,75 @@
 <html>
     <head>
         <title>Canvas</title>
+
+        <style>
+            body {
+                background-color: #222;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 20px;
+                color: white;
+                font-family: sans-serif;
+                margin: 0;
+            }
+
+            #jogo-container {
+                display: flex; 
+                gap: 20px;    
+                background: #333;
+                padding: 15px;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            }
+
+            #controles-laterais {
+                display: flex;
+                flex-direction: column; /* Botões empilhados */
+                gap: 10px;
+                min-width: 180px;
+            }
+
+            button {
+                padding: 15px 10px;
+                cursor: pointer;
+                background: #555;
+                color: white;
+                border: 2px solid #777;
+                border-radius: 5px;
+                font-weight: bold;
+                text-transform: uppercase;
+                transition: all 0.1s;
+            }
+
+            button:active {
+                background: #cc4444;
+                transform: scale(0.95);
+            }
+
+            h3 { margin-top: 0; text-align: center; color: #aaa; }
+        </style>
     </head>
     <body>
-        <canvas id = "canvas" width = "600" height = "600"></canvas>
+        <div id="jogo-container">
+            <canvas id="canvas" width="600" height="600"></canvas>
+
+            <div id="controles-laterais">
+                <h3>Como Jogar</h3>
+                
+                <div style="margin-bottom: 20px; font-size: 0.9em; line-height: 1.4;">
+                    <p><strong>A / D:</strong> Mover</p>
+                    <p><strong>W + D:</strong> Ataque Direita</p>
+                    <p><strong>W + A:</strong> Ataque Esquerda</p>
+                    <p><strong>C:</strong> Descansar (Fogueira)</p>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #555; width: 100%;">
+
+                <h3>Ações Rápidas</h3>
+                <button onclick="location.reload()">Reiniciar Jogo</button>
+            </div>
+        </div>
         <script>
 
     var canvas = document.getElementById("canvas");
@@ -849,5 +915,6 @@
     }, 16); 
 
 </script>
+
     </body>
 </html>
