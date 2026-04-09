@@ -73,12 +73,13 @@
         </div>
         <script>
 
+    //varaveis de controle
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     let tempo  = 0;
     var mapa = 0;
     var num_cenarios = 4;
-
+    let ver_hitbox = true;
     ctx.imageSmoothingEnabled = false;
 
     let teclas = {};
@@ -852,12 +853,22 @@
             let bodyInimigo = { x: enemies_list[i].x, y: enemies_list[i].y, w: enemies_list[i].w, h: enemies_list[i].h };
             let bodyWarrior = { x: warrior_jhon.x, y: warrior_jhon.y, w: warrior_jhon.w, h: warrior_jhon.h };
 
-            if (colide(bodyInimigo, bodyWarrior) && warrior_jhon.invencibilidade == 0 && (enemies_list[i].status == 7 ||enemies_list[i].status == 9)) {
-                warrior_jhon.vida -= 10; 
-                warrior_jhon.invencibilidade = 30; // Tempo de segurança
 
-                attack_sound.currentTime = 0;
-                attack_sound.play();
+            if (enemies_list[i].status == 7 ||enemies_list[i].status == 9) {
+
+                if (ver_hitbox){
+                    ctx.strokeStyle = "Red";
+                    ctx.strokeRect( bodyInimigo.x, bodyInimigo.y, bodyInimigo.w, bodyInimigo.h);
+                }
+
+                if(warrior_jhon.invencibilidade == 0 && colide(bodyInimigo, bodyWarrior)){
+                    warrior_jhon.vida -= 10; 
+                    warrior_jhon.invencibilidade = 30; // Tempo de segurança
+
+                    attack_sound.currentTime = 0;
+                    attack_sound.play();
+
+                }
                 
                 }
             }
