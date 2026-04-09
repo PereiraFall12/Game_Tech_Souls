@@ -79,7 +79,7 @@
     let tempo  = 0;
     var mapa = 0;
     var num_cenarios = 4;
-    let ver_hitbox = true;
+    let ver_hitbox = false;
     ctx.imageSmoothingEnabled = false;
 
     let teclas = {};
@@ -572,6 +572,14 @@
 
         }
 
+        getHitboxAttack(){
+            if(this.status == 7){
+                return {x: this.x - this.attack_range, y:this.y, w: this.attack_range, h: this.h}
+            }else if(this.status == 9){
+                return {x: this.x + this.attack_range, y:this.y, w: this.attack_range, h: this.h}
+            }
+        }
+
         draw(){
             
             if(this.status == 0) {
@@ -852,7 +860,7 @@
             if (enemies_list[i].map == mapa && enemies_list[i].vida > 0) {
             
             // Inimigo ataca Warrior (Novo)
-            let bodyInimigo = { x: enemies_list[i].x, y: enemies_list[i].y, w: enemies_list[i].w, h: enemies_list[i].h };
+            let bodyInimigo = enemies_list[i].getHitboxAttack();
             let bodyWarrior = { x: warrior_jhon.x, y: warrior_jhon.y, w: warrior_jhon.w, h: warrior_jhon.h };
 
 
