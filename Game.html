@@ -217,6 +217,8 @@
     function die(warrior) {
         alert("You died"); // Feedback visual clássico
 
+        teclas = {};
+
         if (warrior.lastBonfire) {
             mapa = warrior.lastBonfire.map;
             warrior.x = warrior.lastBonfire.x;
