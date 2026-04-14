@@ -147,6 +147,9 @@
     let grass = new Image();
     grass.src = "images/grass.png";
 
+    let background = new Image();
+    background.src = "images/background.png";
+
     let improved_tree0 = new Image();
     improved_tree0.src = "images/tree_improved0.png"
 
@@ -633,10 +636,7 @@
             ctx.fillStyle = "SkyBlue";
             ctx.fillRect(0,0,600,600);
 
-            drawSun(450, 30, Math.floor(tempo / 60) % 2);
-
-            ctx.fillStyle = "Green";
-            ctx.fillRect(0,400,600,300);
+            ctx.drawImage(background, 0, 0 , 1300, 600);
 
 
             ctx.drawImage(bush, 510, 356 , 50, 50);
@@ -658,8 +658,7 @@
 
 
         }else if(mapa == 1){
-            ctx.fillStyle = "SkyBlue";
-            ctx.fillRect(0,0,600,600);
+            ctx.drawImage(background, -600, 0 , 1300, 600);
 
             ctx.drawImage(grass, 0, 400, 600, 200);
 
@@ -674,7 +673,9 @@
             ctx.strokeStyle = "Black";
             ctx.strokeRect(300,220, 300,30);
 
+            ctx.drawImage(bush, 180, 450, 50, 50);
             ctx.drawImage(improved_tree0, 50, 430   , 130, 130);
+            
 
             for(var i = 0; i<11; i++){
                 for(var j = 0; j<7; j++){
@@ -690,7 +691,6 @@
                 ctx.strokeRect(300 + 75*i,250, 40,150);
             }
 
-            drawSun(450, 30, Math.floor(tempo / 60) % 2);
 
         }else if(mapa == 2){
 
