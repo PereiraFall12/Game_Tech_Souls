@@ -144,6 +144,9 @@
     let little_tree = new Image();
     little_tree.src = "images/little_tree.png";
 
+    let grass = new Image();
+    grass.src = "images/grass.png";
+
     let improved_tree0 = new Image();
     improved_tree0.src = "images/tree_improved0.png"
 
@@ -722,15 +725,17 @@
             ctx.fillStyle = "Green";
             ctx.fillRect(0,400,600,300);
 
+            ctx.drawImage(grass, 0, 400, 600, 200);
+
             ctx.drawImage(improved_tree0, 420, 430, 130, 130);
             ctx.drawImage(little_tree, 40, 430, 40, 32);
             ctx.drawImage(little_tree, 140, 450, 40, 32);
-            ctx.drawImage(tree, 200, 270, 130, 130);
+            ctx.drawImage(improved_tree0, 200, 410 , 130, 130);
             ctx.drawImage(little_tree, 140, 450, 40, 32);
             ctx.drawImage(little_tree, 350, 368 , 40, 32);
             ctx.drawImage(little_tree, 70, 368 , 40, 32);
             ctx.drawImage(little_tree, 500, 410 , 40, 32);
-            ctx.drawImage(tree, 40, 490, 130, 130);
+            ctx.drawImage(improved_tree0, 40, 490, 130, 130);
             ctx.drawImage(little_tree, 320, 490, 40, 32);
             ctx.drawImage(little_tree, 510, 368 , 40, 32);
 
@@ -752,6 +757,8 @@
             ctx.fillRect(300,220, 300,30);
             ctx.strokeStyle = "Black";
             ctx.strokeRect(300,220, 300,30);
+
+            ctx.drawImage(improved_tree0, 50, 430   , 130, 130);
 
             for(var i = 0; i<11; i++){
                 for(var j = 0; j<7; j++){
