@@ -288,6 +288,8 @@
             this.lastBonfire = null;
             this.invencibilidade = 0;
             this.attack_range = 20;
+            this.levou_dano = 0;
+            this.levou_dano_direção = 0;
         }
 
         update(teclas, tempo){
@@ -306,6 +308,10 @@
 
             if (this.invencibilidade>0){
                 this.invencibilidade--;
+            }
+
+            if (this.levou_dano>0){
+                this.levou_dano--;
             }
 
             this.stamin = Math.min(this.staminMax, Math.max(this.stamin + 0.01, 0));
@@ -623,7 +629,7 @@
     function emCombate() {
         return false;
     }
-
+    
     setInterval(function() {
 
         ctx.clearRect(0,0,600,600);
