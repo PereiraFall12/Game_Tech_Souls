@@ -141,8 +141,8 @@
 
     let tree = new Image();
     tree.src = "images/tree.png";
-    let little_tree = new Image();
-    little_tree.src = "images/little_tree.png";
+    let bush = new Image();
+    bush.src = "images/bush.png";
 
     let grass = new Image();
     grass.src = "images/grass.png";
@@ -728,24 +728,23 @@
             ctx.drawImage(grass, 0, 400, 600, 200);
 
             ctx.drawImage(improved_tree0, 420, 430, 130, 130);
-            ctx.drawImage(little_tree, 40, 430, 40, 32);
-            ctx.drawImage(little_tree, 140, 450, 40, 32);
+            ctx.drawImage(bush, 40, 430, 50, 50);
+            ctx.drawImage(bush, 140, 450, 50, 50);
             ctx.drawImage(improved_tree0, 200, 410 , 130, 130);
-            ctx.drawImage(little_tree, 140, 450, 40, 32);
-            ctx.drawImage(little_tree, 350, 368 , 40, 32);
-            ctx.drawImage(little_tree, 70, 368 , 40, 32);
-            ctx.drawImage(little_tree, 500, 410 , 40, 32);
+            ctx.drawImage(bush, 140, 450, 50, 50);
+            ctx.drawImage(bush, 350, 356 , 50, 50);
+            ctx.drawImage(bush, 70, 356 , 50, 50);
+            ctx.drawImage(bush, 500, 410 , 50, 50);
             ctx.drawImage(improved_tree0, 40, 490, 130, 130);
-            ctx.drawImage(little_tree, 320, 490, 40, 32);
-            ctx.drawImage(little_tree, 510, 368 , 40, 32);
+            ctx.drawImage(bush, 320, 490, 50, 50);
+            ctx.drawImage(bush, 510, 356 , 50, 50);
 
 
         }else if(mapa == 1){
             ctx.fillStyle = "SkyBlue";
             ctx.fillRect(0,0,600,600);
 
-            ctx.fillStyle = "Green";
-            ctx.fillRect(0,400,300,300);
+            ctx.drawImage(grass, 0, 400, 600, 200);
 
             ctx.fillStyle = "Gray";
             ctx.fillRect(300,400,300,300);
