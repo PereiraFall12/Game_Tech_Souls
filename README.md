@@ -4,8 +4,7 @@ Um motor de jogo de ação em 2D construído inteiramente com **JavaScript Vanil
 O jogo sofrerá atualizações periodicamente para aportar novas ideias e implementações.
 
 ## 🕹️ Demonstração
->
-![Demonstração do Gameplay](./gif/gameplay.gif)
+>![Demonstração do Gameplay](./gif/gameplay.gif)
 
 ## 🎮 Como Jogar
 
