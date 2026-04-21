@@ -26,10 +26,11 @@ Para garantir que todos os módulos e recursos visuais sejam carregados corretam
    ├── index.html
    ├── images/
    ├── sounds/
+   ├── gif/
    └── js/
        ├── settings.js
        ├── assets.js
        ├── utils.js
        ├── classes.js
        └── main.js
-3. Bata abrir o arquivo em seu navegador.
+3. Bata abrir o arquivo `index.html` em seu navegador.
