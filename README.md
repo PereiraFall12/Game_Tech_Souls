@@ -33,4 +33,4 @@ Para garantir que todos os módulos e recursos visuais sejam carregados corretam
        ├── utils.js
        ├── classes.js
        └── main.js
-3. Bata abrir o arquivo `index.html` em seu navegador.
+3. Basta abrir o arquivo `index.html` em seu navegador.
