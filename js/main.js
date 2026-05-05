@@ -48,6 +48,49 @@ function trocarMusica(novaMusica) {
     musicaAtual.play();
 }
 
+function drawHUD() {
+    // Barra de stamina
+    ctx.fillStyle = "#dddddd";
+    ctx.fillRect(7, 30, 80, 10);
+    ctx.fillStyle = "green";
+    ctx.fillRect(7, 30, warrior_jhon.stamin * 20, 10);
+    ctx.strokeStyle = "#000000";
+    ctx.strokeRect(7, 30, 80, 10);
+
+    // Barra de vida
+    ctx.fillStyle = "#dddddd";
+    ctx.fillRect(7, 10, 5 * warrior_jhon.vidaMax, 10);
+    ctx.fillStyle = "red";
+    ctx.fillRect(7, 10, warrior_jhon.vida * 5, 10);
+    ctx.strokeStyle = "#000000";
+    ctx.strokeRect(7, 10, warrior_jhon.vidaMax * 5, 10);
+}
+
+function adicionarEntidades(objetos) {
+    objetos.push({
+        y: warrior_jhon.y + warrior_jhon.h,
+        draw: () => warrior_jhon.draw()
+    });
+
+    for (let e of enemies_list) {
+        if (e.map == mapa) {
+            objetos.push({
+                y: e.y + e.h,
+                draw: () => e.draw()
+            });
+        }
+    }
+
+    for (let b of bonfires) {
+        if (b.map == mapa) {
+            objetos.push({
+                y: b.y + b.h,
+                draw: () => b.draw()
+            });
+        }
+    }
+}
+
 
 warrior_jhon = new Warrior(5,370, warrior_sprites);
 //enemy_albert = new Enemy(450, 360, enemy_sprites, 2);
@@ -87,123 +130,190 @@ setInterval(function() {
 
     tempo++;
 
+    warrior_jhon.update(teclas, tempo);
 
-    if (mapa == 0){
+    //atualização do bot
+    for(var i = 0; i<enemies_list.length; i++){
+        if(enemies_list[i].map == mapa){
+            enemies_list[i].update(tempo, warrior_jhon);
+        }
+    }
 
+
+    if (mapa == 0) {
+        // Fundo
         ctx.fillStyle = "SkyBlue";
-        ctx.fillRect(0,0,600,600);
-
-        ctx.drawImage(background, 0, 0 , 1300, 600);
-
-
-        ctx.drawImage(bush, 510, 356 , 50, 50);
-        ctx.drawImage(bush, 350, 356 , 50, 50);
-        ctx.drawImage(bush, 70, 356 , 50, 50);
-
+        ctx.fillRect(0, 0, 600, 600);
+        ctx.drawImage(background, 0, 0, 1300, 600);
         ctx.drawImage(grass, 0, 400, 600, 200);
 
-        ctx.drawImage(bush, 320, 490, 50, 50);
+        let objetos = [];
 
-        ctx.drawImage(improved_tree0, 420, 430, 130, 130);
-        ctx.drawImage(bush, 40, 430, 50, 50);
-        ctx.drawImage(bush, 140, 450, 50, 50);
-        ctx.drawImage(improved_tree0, 200, 410 , 130, 130);
-        ctx.drawImage(bush, 140, 450, 50, 50);
-        ctx.drawImage(improved_tree0, 40, 490, 130, 130);
-        ctx.drawImage(bush, 500, 410 , 50, 50);
-        
+        objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 510, 356, 50, 50) });
+        objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 350, 356, 50, 50) });
+        objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 70,  356, 50, 50) });
+        objetos.push({ y: 490+50, draw: () => ctx.drawImage(bush, 320, 490, 50, 50) });
+        objetos.push({ y: 430+130, draw: () => ctx.drawImage(improved_tree0, 420, 430, 130, 130) });
+        objetos.push({ y: 430+50, draw: () => ctx.drawImage(bush, 40,  430, 50, 50) });
+        objetos.push({ y: 450+50, draw: () => ctx.drawImage(bush, 140, 450, 50, 50) });
+        objetos.push({ y: 410+130, draw: () => ctx.drawImage(improved_tree0, 200, 410, 130, 130) });
+        objetos.push({ y: 490+130, draw: () => ctx.drawImage(improved_tree0, 40, 490, 130, 130) });
+        objetos.push({ y: 410+50, draw: () => ctx.drawImage(bush, 500, 410, 50, 50) });
+
+        adicionarEntidades(objetos);
+
+        objetos.sort((a, b) => a.y - b.y);
+        objetos.forEach(o => o.draw());
+
+        drawHUD();
+    }
 
 
-    }else if(mapa == 1){
+    else if (mapa == 1) {
+
+        // Fundo
         ctx.drawImage(background, -600, 0 , 1300, 600);
-
         ctx.drawImage(grass, 0, 400, 600, 200);
 
-        ctx.fillStyle = "Gray";
-        ctx.fillRect(300,400,300,300);
+        let objetos = [];
 
-        ctx.fillStyle = "#333333";
-        ctx.fillRect(300, 250, 300, 150);
+        objetos.push({ y: 400+300, draw: () => {
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(300,400,300,300);
+        }});
 
-        ctx.fillStyle = "Gray";
-        ctx.fillRect(300,220, 300,30);
-        ctx.strokeStyle = "Black";
-        ctx.strokeRect(300,220, 300,30);
+        objetos.push({ y: 250+150, draw: () => {
+            ctx.fillStyle = "#333333";
+            ctx.fillRect(300, 250, 300, 150);
+        }});
 
-        ctx.drawImage(bush, 180, 450, 50, 50);
-        ctx.drawImage(improved_tree0, 50, 430   , 130, 130);
-        
+        objetos.push({ y: 220+30, draw: () => {
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(300,220, 300,30);
+            ctx.strokeStyle = "Black";
+            ctx.strokeRect(300,220, 300,30);
+        }});
 
-        for(var i = 0; i<11; i++){
-            for(var j = 0; j<7; j++){
+        objetos.push({ y: 450+50, draw: () => ctx.drawImage(bush, 180, 450, 50, 50) });
+        objetos.push({ y: 430+130, draw: () => ctx.drawImage(improved_tree0, 50, 430, 130, 130) });
+
+        adicionarEntidades(objetos);
+
+        objetos.sort((a, b) => a.y - b.y);
+        objetos.forEach(o => o.draw());
+
+        // grade (overlay fixo)
+        for (let i = 0; i < 11; i++) {
+            for (let j = 0; j < 7; j++) {
                 ctx.strokeStyle = "Black";
                 ctx.strokeRect(300 + i *30,400 + j*30 ,30, 30);
             }
         }
 
-        for(var i= 0; i<4; i++){
+        for (let i= 0; i<4; i++){
             ctx.fillStyle = "Gray";
             ctx.fillRect(300 + 75*i,250, 40,150);
             ctx.strokeStyle = "Black";
             ctx.strokeRect(300 + 75*i,250, 40,150);
         }
 
+        drawHUD();
+    }
 
-    }else if(mapa == 2){
+
+    else if (mapa == 2){
 
         ctx.fillStyle = "#333333";
         ctx.fillRect(0,0,600,600);
 
-        ctx.fillStyle = "Gray";
-        ctx.fillRect(0,400,600,300);
+        let objetos = [];
 
-        for(var i = 0; i<21; i++){
-            for(var j = 0; j<7; j++){
+        objetos.push({ y: 400+300, draw: () => {
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(0,400,600,300);
+        }});
+
+        for (let i= 0; i<8; i++){
+            objetos.push({
+                y: 400,
+                draw: () => {
+                    ctx.fillStyle = "Gray";
+                    ctx.fillRect(80*i,0, 30,400);
+                    ctx.strokeStyle = "Black";
+                    ctx.strokeRect(80*i,0, 30,400);
+                    drawTorch(80*i, 350, Math.floor(tempo / 5) % 2);
+                    ctx.drawImage(flag, 80*i + 40, 200, 30, 30);
+                }
+            });
+        }
+
+        adicionarEntidades(objetos);
+
+        objetos.sort((a, b) => a.y - b.y);
+        objetos.forEach(o => o.draw());
+
+        // chão grid
+        for (let i = 0; i<21; i++){
+            for (let j = 0; j<7; j++){
                 ctx.strokeStyle = "Black";
                 ctx.strokeRect(i *30,400 + j*30 ,30, 30);
             }
         }
 
-        for(var i= 0; i<8; i++){
-            ctx.fillStyle = "Gray";
-            ctx.fillRect(80*i,0, 30,400);
-            ctx.strokeStyle = "Black";
-            ctx.strokeRect(80*i,0, 30,400);
-            drawTorch(80*i, 350, Math.floor(tempo / 5) % 2);
-            ctx.drawImage(flag, 80*i + 40, 200, 30, 30);
-        }
+        drawHUD();
+    }
 
-    } else if (mapa == 3){
+
+    else if (mapa == 3){
 
         ctx.fillStyle = "#333333";
         ctx.fillRect(0,0,600,600);
 
-        ctx.fillStyle = "Gray";
-        ctx.fillRect(0,400,600,300);
+        let objetos = [];
 
-        for(var i = 0; i<21; i++){
-            for(var j = 0; j<7; j++){
+        objetos.push({ y: 400+300, draw: () => {
+            ctx.fillStyle = "Gray";
+            ctx.fillRect(0,400,600,300);
+        }});
+
+        for (let i= 0; i<8; i++){
+            objetos.push({
+                y: 400,
+                draw: () => {
+                    ctx.fillStyle = "Gray";
+                    ctx.fillRect(80*i,0, 30,400);
+                    ctx.strokeStyle = "Black";
+                    ctx.strokeRect(80*i,0, 30,400);
+                    drawTorch(80*i, 350, Math.floor(tempo / 5) % 2);
+                }
+            });
+        }
+
+        // Eye entra na oclusão também
+        objetos.push({
+            y: 100 + 50,
+            draw: () => drawEye(300, 100, warrior_jhon)
+        });
+
+        adicionarEntidades(objetos);
+
+        objetos.sort((a, b) => a.y - b.y);
+        objetos.forEach(o => o.draw());
+
+        // chão grid
+        for (let i = 0; i<21; i++){
+            for (let j = 0; j<7; j++){
                 ctx.strokeStyle = "Black";
                 ctx.strokeRect(i *30,400 + j*30 ,30, 30);
             }
         }
 
-        for(var i= 0; i<8; i++){
-            ctx.fillStyle = "Gray";
-            ctx.fillRect(80*i,0, 30,400);
-            ctx.strokeStyle = "Black";
-            ctx.strokeRect(80*i,0, 30,400);
-            drawTorch(80*i, 350, Math.floor(tempo / 5) % 2);
-        }
-
-        drawEye(300, 100, warrior_jhon);
-
+        drawHUD();
     }
 
     for(var i = 0; i<bonfires.length; i++){
         if(bonfires[i].map == mapa){
             bonfires[i].update(tempo);
-            bonfires[i].draw();
             if(teclas["c"]){
                 verify_proximity(warrior_jhon, bonfires[i]);
             }
@@ -228,14 +338,6 @@ setInterval(function() {
             }
         }
         warrior_jhon.status = 2; 
-    }
-
-    //atualização do bot
-    for(var i = 0; i<enemies_list.length; i++){
-        if(enemies_list[i].map == mapa){
-            enemies_list[i].update(tempo, warrior_jhon);
-            enemies_list[i].draw();
-        }
     }
 
     //Ataque do inimigo
@@ -266,9 +368,6 @@ setInterval(function() {
             }
         }
     }
-
-    warrior_jhon.update(teclas, tempo);
-    warrior_jhon.draw();
 
     if (warrior_jhon.vida <= 0) {
         die(warrior_jhon);

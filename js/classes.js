@@ -144,23 +144,6 @@ class Warrior{
             ctx.drawImage(this.sprite[3], -this.x -this.w, this.y, this.w + this.attack_range, this.h);
             ctx.restore();
         }
-
-        //desenha a barra de stamina
-        ctx.fillStyle = "#dddddd";
-        ctx.fillRect(7,30, 80, 10);
-        ctx.fillStyle = "Green";
-        ctx.fillRect(7, 30, this.stamin*20 , 10);
-        ctx.strokeStyle = "#000000";
-        ctx.strokeRect(7, 30, 80, 10);
-
-        //desenha a barra de vida
-        ctx.fillStyle = "#dddddd";
-        ctx.fillRect(7,10, 5*this.vidaMax, 10);
-        ctx.fillStyle = "Red";
-        ctx.fillRect(7, 10, this.vida*5 , 10);
-        ctx.strokeStyle = "#000000";
-        ctx.strokeRect(7, 10, this.vidaMax*5 , 10);
-
     }
 }
 
