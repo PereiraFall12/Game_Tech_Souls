@@ -26,7 +26,7 @@ function die(warrior) {
     warrior.stamin = warrior.staminMax;
     warrior.invencibilidade = 0;
 
-    // Opcional: Resetar a vida de todos os inimigos do mapa ao morrer
+    // Reseta a vida de todos os inimigos do mapa ao morrer
     enemies_list.forEach(e => {
         e.vida = 2; 
     });
@@ -89,6 +89,15 @@ function adicionarEntidades(objetos) {
             });
         }
     }
+
+    for (let o of alpha_object_list) {
+        if (o.map == mapa) {
+            objetos.push({
+                y: o.y + o.h,
+                draw: () => o.draw()
+            });
+        }
+    }
 }
 
 
@@ -102,6 +111,7 @@ bonfire_zuli = new Bonfire(200, 380, bonfire_sprites, 3);
 
 bonfires = [bonfire_zuli];
 enemies_list = [ogre_jorge, ogre_2, ogre_3, ogre_4];
+alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0)];
 
 document.addEventListener("keydown", (event) => {
     teclas[event.key] = true;
@@ -149,7 +159,6 @@ setInterval(function() {
 
         let objetos = [];
 
-        objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 510, 356, 50, 50) });
         objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 350, 356, 50, 50) });
         objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 70,  356, 50, 50) });
         objetos.push({ y: 490+50, draw: () => ctx.drawImage(bush, 320, 490, 50, 50) });
@@ -311,6 +320,7 @@ setInterval(function() {
         drawHUD();
     }
 
+    // Iteração com Bonfires
     for(var i = 0; i<bonfires.length; i++){
         if(bonfires[i].map == mapa){
             bonfires[i].update(tempo);
@@ -318,6 +328,11 @@ setInterval(function() {
                 verify_proximity(warrior_jhon, bonfires[i]);
             }
         }
+    }
+
+    // Atuaçização de objetos iterativos
+    for(let o of alpha_object_list){
+        o.update(tempo, warrior_jhon);
     }
 
     //Ataque do jogador

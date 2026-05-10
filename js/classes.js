@@ -295,14 +295,14 @@ class Enemy{
     }
 }
 
-
 class InteractableObject{
-    constructor(image, x, y, w, h){
+    constructor(image, x, y, w, h, map){
         this.image = image;
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
+        this.map = map;
         this.alpha = 1;
         this.box = {x:this.x, y:this.y,  w:this.w, h:this.h}
     }
