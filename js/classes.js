@@ -294,3 +294,31 @@ class Enemy{
         
     }
 }
+
+
+class Interactable_object{
+    constructor(image, x, y, w, h){
+        this.image = image;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.alpha = 1;
+        this.box = {x:this.x, y:this.y,  w:this.w, h:this.h}
+    }
+
+    update(tempo, warrior){
+        if(colide(this.box, warrior.getHitbox())){
+            this.alpha = 0.3;
+        }else{
+            this.alpha = 1;
+        }
+    }
+
+    draw(){
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.drawImage(this.image, this.x, this.y, this.w, this.h);
+        ctx.restore();
+    }
+}
