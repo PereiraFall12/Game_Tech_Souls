@@ -296,7 +296,7 @@ class Enemy{
 }
 
 
-class Interactable_object{
+class InteractableObject{
     constructor(image, x, y, w, h){
         this.image = image;
         this.x = x;
