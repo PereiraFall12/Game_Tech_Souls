@@ -111,7 +111,10 @@ bonfire_zuli = new Bonfire(200, 380, bonfire_sprites, 3);
 
 bonfires = [bonfire_zuli];
 enemies_list = [ogre_jorge, ogre_2, ogre_3, ogre_4];
-alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0)];
+alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0),
+    new InteractableObject(bush, 350, 356, 50, 50, 0),
+    new InteractableObject(bush, 70, 356, 50, 50, 0)
+];
 
 document.addEventListener("keydown", (event) => {
     teclas[event.key] = true;
@@ -158,9 +161,6 @@ setInterval(function() {
         ctx.drawImage(grass, 0, 400, 600, 200);
 
         let objetos = [];
-
-        objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 350, 356, 50, 50) });
-        objetos.push({ y: 356+50, draw: () => ctx.drawImage(bush, 70,  356, 50, 50) });
         objetos.push({ y: 490+50, draw: () => ctx.drawImage(bush, 320, 490, 50, 50) });
         objetos.push({ y: 430+130, draw: () => ctx.drawImage(improved_tree0, 420, 430, 130, 130) });
         objetos.push({ y: 430+50, draw: () => ctx.drawImage(bush, 40,  430, 50, 50) });
