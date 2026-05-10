@@ -99,6 +99,15 @@ class Warrior{
         }
     }
 
+    getBodyBox() {
+        return {
+            x: this.x,
+            y: this.y,
+            w: this.w,
+            h: this.h
+        };
+    }
+
     getHitbox() {
         if (this.status == 5){
             return {
@@ -307,8 +316,8 @@ class InteractableObject{
         this.box = {x:this.x, y:this.y,  w:this.w, h:this.h}
     }
 
-    update(tempo, warrior){
-        if(colide(this.box, warrior.getHitbox())){
+    update(warrior){
+        if(colide(this.box, warrior.getBodyBox())){
             this.alpha = 0.3;
         }else{
             this.alpha = 1;

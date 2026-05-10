@@ -332,7 +332,7 @@ setInterval(function() {
 
     // Atuaçização de objetos iterativos
     for(let o of alpha_object_list){
-        o.update(tempo, warrior_jhon);
+        o.update(warrior_jhon);
     }
 
     //Ataque do jogador
