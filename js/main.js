@@ -118,7 +118,11 @@ alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0),
     new InteractableObject(bush, 70, 356, 50, 50, 0),
     new InteractableObject(pillar,300, 250,90, 300, 1, r = 300),
     new InteractableObject(pillar,400, 250,90, 300, 1 , r = 300),
-    new InteractableObject(pillar,500, 250,90, 300, 1 , r = 300)
+    new InteractableObject(pillar,500, 250,90, 300, 1 , r = 300),
+    new InteractableObject(pillar, 360, 250, 60, 200, 1, -60, false, 0.4),
+    new InteractableObject(pillar, 460, 250, 60, 200, 1, -60, false, 0.4),
+    new InteractableObject(pillar, 560, 250, 60, 200, 1, -60, false, 0.4)
+    
 ];
 
 document.addEventListener("keydown", (event) => {
@@ -196,7 +200,7 @@ setInterval(function() {
             ctx.fillRect(300,400,300,300);
         }});
 
-        objetos.push({ y: 250+150, draw: () => {
+        objetos.push({ y: 250, draw: () => {
             ctx.fillStyle = "#333333";
             ctx.fillRect(300, 250, 300, 150);
         }});

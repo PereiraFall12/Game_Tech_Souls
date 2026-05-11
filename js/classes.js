@@ -305,7 +305,7 @@ class Enemy{
 }
 
 class InteractableObject{
-    constructor(image, x, y, w, h, map, r = 0, translucible = true){
+    constructor(image, x, y, w, h, map, r = 0, translucible = true, bright = 1){
         this.image = image;
         this.x = x;
         this.y = y;
@@ -315,7 +315,8 @@ class InteractableObject{
         this.alpha = 1;
         this.box = {x:this.x, y:this.y,  w:this.w, h:this.h}
         this.r = r;
-        this.translucible = translucible
+        this.translucible = translucible;
+        this.bright = bright;
     }
 
     update(warrior){
@@ -329,6 +330,7 @@ class InteractableObject{
     draw(){
         ctx.save();
         ctx.globalAlpha = this.alpha;
+        ctx.filter = `brightness(${this.bright})`;
         ctx.drawImage(this.image, this.x, this.y, this.w, this.h);
         ctx.restore();
     }

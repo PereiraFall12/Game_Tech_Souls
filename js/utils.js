@@ -42,6 +42,7 @@ var drawEye = function(x, y, warrior){
 }
 
 function applyFilter(img, a,r = 1, g = 1, b = 1) {
+
     let canvasOff = document.createElement("canvas");
     let ctxOff = canvasOff.getContext("2d");
     canvasOff.width = img.width;
