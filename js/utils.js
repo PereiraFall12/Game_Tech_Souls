@@ -13,7 +13,10 @@ var circle = function(x, y, radius, fillCircle) {
 }
 
 function verify_proximity(warrior, bonfire){
-    if(Math.abs(warrior.x < bonfire.x) <= 40) warrior.lastBonfire = bonfire;
+    if(Math.abs(warrior.x < bonfire.x) <= 40){
+        warrior.lastBonfire = bonfire;
+        warrior.vida = warrior.vidaMax;
+    }
 }
 
 var drawSun = function(x, y, status){
@@ -36,4 +39,26 @@ var drawEye = function(x, y, warrior){
     circle(x + 23*Math.sin(theta), y + 23*Math.cos(theta), 15, true);
     ctx.fillStyle = "#dddddd";
     circle(x + 5 + 23*Math.sin(theta), y - 5 + 23*Math.cos(theta), 4, true);
+}
+
+function applyFilter(img, a,r = 1, g = 1, b = 1) {
+    let canvasOff = document.createElement("canvas");
+    let ctxOff = canvasOff.getContext("2d");
+    canvasOff.width = img.width;
+    canvasOff.height = img.height;
+
+    ctxOff.drawImage(img, 0, 0);
+    let imgData = ctxOff.getImageData(0, 0, img.width, img.height);
+    let data = imgData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        data[i]     = data[i]     * r; // Red
+        data[i + 1] = data[i + 1] * g; // Green
+        data[i + 2] = data[i + 2] * b; // Blue
+        data[i + 3] = data[i + 3] * a; // Alpha
+    }
+
+    ctxOff.putImageData(imgData, 0, 0);
+    
+    return canvasOff;
 }

@@ -5,6 +5,8 @@ var mapa = 0;
 let teclas = {};
 let musicaAtual = null;
 ctx.imageSmoothingEnabled = false;
+ctx.lineWidth = 2;
+
 
 function die(warrior) {
     alert("You died"); // Feedback visual clássico
@@ -93,7 +95,7 @@ function adicionarEntidades(objetos) {
     for (let o of alpha_object_list) {
         if (o.map == mapa) {
             objetos.push({
-                y: o.y + o.h,
+                y: o.y + o.h + o.r,
                 draw: () => o.draw()
             });
         }
@@ -113,7 +115,10 @@ bonfires = [bonfire_zuli];
 enemies_list = [ogre_jorge, ogre_2, ogre_3, ogre_4];
 alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0),
     new InteractableObject(bush, 350, 356, 50, 50, 0),
-    new InteractableObject(bush, 70, 356, 50, 50, 0)
+    new InteractableObject(bush, 70, 356, 50, 50, 0),
+    new InteractableObject(pillar,300, 250,90, 300, 1, r = 300),
+    new InteractableObject(pillar,400, 250,90, 300, 1 , r = 300),
+    new InteractableObject(pillar,500, 250,90, 300, 1 , r = 300)
 ];
 
 document.addEventListener("keydown", (event) => {
@@ -206,25 +211,22 @@ setInterval(function() {
         objetos.push({ y: 450+50, draw: () => ctx.drawImage(bush, 180, 450, 50, 50) });
         objetos.push({ y: 430+130, draw: () => ctx.drawImage(improved_tree0, 50, 430, 130, 130) });
 
+        objetos.push({
+            y: 700, 
+            draw: () => {
+                for (let i = 0; i < 11; i++) {
+                    for (let j = 0; j < 7; j++) {
+                        ctx.strokeStyle = "Black";
+                        ctx.strokeRect(300 + i * 30, 400 + j * 30, 30, 30);
+                    }
+                }
+            }
+        });
+
         adicionarEntidades(objetos);
 
         objetos.sort((a, b) => a.y - b.y);
         objetos.forEach(o => o.draw());
-
-        // grade (overlay fixo)
-        for (let i = 0; i < 11; i++) {
-            for (let j = 0; j < 7; j++) {
-                ctx.strokeStyle = "Black";
-                ctx.strokeRect(300 + i *30,400 + j*30 ,30, 30);
-            }
-        }
-
-        for (let i= 0; i<4; i++){
-            ctx.fillStyle = "Gray";
-            ctx.fillRect(300 + 75*i,250, 40,150);
-            ctx.strokeStyle = "Black";
-            ctx.strokeRect(300 + 75*i,250, 40,150);
-        }
 
         drawHUD();
     }
@@ -248,7 +250,7 @@ setInterval(function() {
                 draw: () => {
                     ctx.fillStyle = "Gray";
                     ctx.fillRect(80*i,0, 30,400);
-                    ctx.strokeStyle = "Black";
+                    ctx.strokeStyle = "#000000";
                     ctx.strokeRect(80*i,0, 30,400);
                     drawTorch(80*i, 350, Math.floor(tempo / 5) % 2);
                     ctx.drawImage(flag, 80*i + 40, 200, 30, 30);
@@ -264,7 +266,7 @@ setInterval(function() {
         // chão grid
         for (let i = 0; i<21; i++){
             for (let j = 0; j<7; j++){
-                ctx.strokeStyle = "Black";
+                ctx.strokeStyle = "#000000";
                 ctx.strokeRect(i *30,400 + j*30 ,30, 30);
             }
         }
@@ -298,7 +300,6 @@ setInterval(function() {
             });
         }
 
-        // Eye entra na oclusão também
         objetos.push({
             y: 100 + 50,
             draw: () => drawEye(300, 100, warrior_jhon)

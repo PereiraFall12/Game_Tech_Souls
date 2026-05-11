@@ -305,7 +305,7 @@ class Enemy{
 }
 
 class InteractableObject{
-    constructor(image, x, y, w, h, map){
+    constructor(image, x, y, w, h, map, r = 0, translucible = true){
         this.image = image;
         this.x = x;
         this.y = y;
@@ -314,10 +314,12 @@ class InteractableObject{
         this.map = map;
         this.alpha = 1;
         this.box = {x:this.x, y:this.y,  w:this.w, h:this.h}
+        this.r = r;
+        this.translucible = translucible
     }
 
     update(warrior){
-        if(colide(this.box, warrior.getBodyBox())){
+        if(colide(this.box, warrior.getBodyBox()) && this.translucible){
             this.alpha = 0.3;
         }else{
             this.alpha = 1;

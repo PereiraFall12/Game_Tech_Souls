@@ -58,7 +58,7 @@ let grass = new Image();
 grass.src = "images/grass.png";
 
 let pillar = new Image();
-pillar.scr = "images/pillar.png"
+pillar.src = "images/pillar.png"
 
 let background = new Image();
 background.src = "images/background.png";
