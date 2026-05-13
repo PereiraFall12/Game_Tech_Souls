@@ -298,10 +298,6 @@ setInterval(function() {
             });
         }
 
-        objetos.push({
-            y: 100 + 50,
-            draw: () => drawEye(300, 100, warrior_jhon)
-        });
 
         // chão grid
         for (let i = 0; i<21; i++){

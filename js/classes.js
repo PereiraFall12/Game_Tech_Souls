@@ -337,15 +337,16 @@ class InteractableObject{
 }
 
 class Particle{
-    constructor(x, y, r, color, vx, vy, hostile = false, fill = false){
+    constructor(x, y, radius, color, vx, vy, hostile = false, fill = false, reg = 0){
         this.x = x;
         this.y = y;
-        this.r = r;
+        this.radius = radius;
         this.color = color;
         this.vx = vx;
         this.vy = vy;
         this.hostile = hostile;
         this.fill = fill;
+        this.reg = reg;
         this.dead = false;
     }
 
@@ -356,6 +357,50 @@ class Particle{
 
     draw(){
         ctx.fillStyle = this.color;
-        circle(this.x, this.y, this.r, this.fill);
+        circle(this.x, this.y, this.radius, this.fill);
+    }
+}
+
+class EyeUnity{
+    constructor(x, y, color, r = 0){
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.theta = 0;
+        this.r = r;
+    }
+
+    update(warrior){
+        this.theta = Math.atan((this.x - warrior.x)/ (this.y - warrior.y));
+    }
+
+    draw(){
+        ctx.fillStyle = "White";
+        circle(this.x, this.y, 50, true);
+        ctx.fillStyle = this.color;
+        circle(this.x + 23*Math.sin(this.theta), this.y + 23*Math.cos(this.theta), 25, true);
+        ctx.fillStyle = "black";
+        circle(this.x + 23*Math.sin(this.theta), this.y + 23*Math.cos(this.theta), 15, true);
+        ctx.fillStyle = "#dddddd";
+        circle(this.x + 5 + 23*Math.sin(this.theta), this.y - 5 + 23*Math.cos(this.theta), 4, true);
+    }
+}
+
+class EyeBoss{
+    constructor(first_x, first_y, sec_x, sec_y, color_1, color_2){
+        this.firstEye = new EyeUnity(first_x, first_y, color_1);
+        this.secEye = new EyeUnity(sec_x, first_y, color_2);
+        this.vidaMax = 1000;
+        this.vida = 1000;
+    }
+
+    update(warrior, time){
+        this.firstEye.update(warrior);
+        this.secEye.update(warrior);
+    }
+
+    draw(){
+        this.firstEye.draw();
+        this.secEye.draw();   
     }
 }

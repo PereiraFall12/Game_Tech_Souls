@@ -29,18 +29,6 @@ var drawTorch = function(x, y, status){
     else ctx.drawImage(torch_1, x, y, 30, 30);
 }
 
-var drawEye = function(x, y, warrior){
-    ctx.fillStyle = "White";
-    circle(x, y, 50, true);
-    let theta = Math.atan((x - warrior.x)/ (y - warrior.y));
-    ctx.fillStyle = "Red";
-    circle(x + 23*Math.sin(theta), y + 23*Math.cos(theta), 25, true);
-    ctx.fillStyle = "black";
-    circle(x + 23*Math.sin(theta), y + 23*Math.cos(theta), 15, true);
-    ctx.fillStyle = "#dddddd";
-    circle(x + 5 + 23*Math.sin(theta), y - 5 + 23*Math.cos(theta), 4, true);
-}
-
 function applyFilter(img, a,r = 1, g = 1, b = 1) {
 
     let canvasOff = document.createElement("canvas");
