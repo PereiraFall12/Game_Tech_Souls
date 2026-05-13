@@ -335,3 +335,27 @@ class InteractableObject{
         ctx.restore();
     }
 }
+
+class Particle{
+    constructor(x, y, r, color, vx, vy, hostile = false, fill = false){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.color = color;
+        this.vx = vx;
+        this.vy = vy;
+        this.hostile = hostile;
+        this.fill = fill;
+        this.dead = false;
+    }
+
+    update(){
+        this.x = this.x + this.vx;
+        this.y = this.y + this.vy;  
+    }
+
+    draw(){
+        ctx.fillStyle = this.color;
+        circle(this.x, this.y, this.r, this.fill);
+    }
+}
