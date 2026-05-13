@@ -337,13 +337,14 @@ class InteractableObject{
 }
 
 class Particle{
-    constructor(x, y, radius, color, vx, vy, hostile = false, fill = false, reg = 0){
+    constructor(x, y, radius, color, vx, vy, map, hostile = false, fill = false, reg = 0){
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.color = color;
         this.vx = vx;
         this.vy = vy;
+        this.map = map;
         this.hostile = hostile;
         this.fill = fill;
         this.reg = reg;

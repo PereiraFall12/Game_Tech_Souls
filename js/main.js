@@ -125,6 +125,9 @@ alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0),
     
 ];
 
+
+particles = [];
+
 document.addEventListener("keydown", (event) => {
     teclas[event.key] = true;
 });
@@ -319,7 +322,7 @@ setInterval(function() {
         drawHUD();
     }
 
-    // Iteração com Bonfires
+    // Interação com Bonfires
     for(var i = 0; i<bonfires.length; i++){
         if(bonfires[i].map == mapa){
             bonfires[i].update(tempo);
@@ -327,6 +330,11 @@ setInterval(function() {
                 verify_proximity(warrior_jhon, bonfires[i]);
             }
         }
+    }
+
+    //Interação com partículas
+    for(let p of particles){
+        p.update(warrior_jhon);
     }
 
     // Atuaçização de objetos iterativos
@@ -360,7 +368,7 @@ setInterval(function() {
         
         // Inimigo ataca Warrior (Novo)
         let bodyInimigo = enemies_list[i].getHitboxAttack();
-        let bodyWarrior = { x: warrior_jhon.x, y: warrior_jhon.y, w: warrior_jhon.w, h: warrior_jhon.h };
+        let bodyWarrior = warrior_jhon.getBodyBox();
 
 
         if (enemies_list[i].status == 7 ||enemies_list[i].status == 9) {
