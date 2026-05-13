@@ -232,8 +232,11 @@ setInterval(function() {
 
     else if (mapa == 2){
 
-        ctx.fillStyle = "#333333";
-        ctx.fillRect(0,0,600,600);
+        for (let i = 0; i<21; i++){
+            for (let j = 0; j<15; j++){
+                ctx.drawImage(wall_1, i *30, j*30 ,30, 30);
+            }
+        }
 
         let objetos = [];
 
@@ -274,8 +277,11 @@ setInterval(function() {
 
     else if (mapa == 3){
 
-        ctx.fillStyle = "#333333";
-        ctx.fillRect(0,0,600,600);
+        for (let i = 0; i<21; i++){
+            for (let j = 0; j<15; j++){
+                ctx.drawImage(wall_1, i *30, j*30 ,30, 30);
+            }
+        }
 
         let objetos = [];
 
