@@ -200,11 +200,6 @@ setInterval(function() {
             ctx.fillRect(300,400,300,300);
         }});
 
-        objetos.push({ y: 250, draw: () => {
-            ctx.fillStyle = "#333333";
-            ctx.fillRect(300, 250, 300, 150);
-        }});
-
         objetos.push({ y: 220+30, draw: () => {
             ctx.fillStyle = "Gray";
             ctx.fillRect(300,220, 300,30);
