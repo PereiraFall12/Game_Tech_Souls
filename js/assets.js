@@ -62,6 +62,9 @@ pillar.src = "images/pillar.png"
 let ground = new Image();
 ground.src = "images/ground.png"
 
+let wall_1 = new Image();
+wall_1.src = "images/wall_1.png"
+
 let background = new Image();
 background.src = "images/background.png";
 
