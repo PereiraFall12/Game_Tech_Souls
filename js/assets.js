@@ -39,7 +39,6 @@ ogre_4.src = "images/attacking_2_ogre.png";
 ogre_5.src = "images/dead_ogre.png";
 ogre_sprites = [ogre_0, ogre_1, ogre_2, ogre_3, ogre_4, ogre_5];
 
-
 let torch_0 = new Image();
 let torch_1 = new Image();
 
@@ -59,6 +58,9 @@ grass.src = "images/grass.png";
 
 let pillar = new Image();
 pillar.src = "images/pillar.png"
+
+let ground = new Image();
+ground.src = "images/ground.png"
 
 let background = new Image();
 background.src = "images/background.png";
