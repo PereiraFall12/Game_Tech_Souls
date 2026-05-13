@@ -210,17 +210,16 @@ setInterval(function() {
         objetos.push({ y: 450+50, draw: () => ctx.drawImage(bush, 180, 450, 50, 50) });
         objetos.push({ y: 430+130, draw: () => ctx.drawImage(improved_tree0, 50, 430, 130, 130) });
 
-        objetos.push({
-            y: 700, 
-            draw: () => {
-                for (let i = 0; i < 11; i++) {
-                    for (let j = 0; j < 7; j++) {
-                        ctx.strokeStyle = "Black";
-                        ctx.strokeRect(300 + i * 30, 400 + j * 30, 30, 30);
+        for (let i = 0; i<11; i++){
+            for (let j = 0; j<7; j++){
+                objetos.push({
+                    y: 700,
+                    draw: () =>{
+                        ctx.drawImage(ground, 300 + i *30,400 + j*30 ,30, 30);
                     }
-                }
+                });
             }
-        });
+        }
 
         adicionarEntidades(objetos);
 
@@ -238,11 +237,6 @@ setInterval(function() {
 
         let objetos = [];
 
-        objetos.push({ y: 400+300, draw: () => {
-            ctx.fillStyle = "Gray";
-            ctx.fillRect(0,400,600,300);
-        }});
-
         for (let i= 0; i<8; i++){
             objetos.push({
                 y: 400,
@@ -257,18 +251,22 @@ setInterval(function() {
             });
         }
 
+        // chão grid
+        for (let i = 0; i<21; i++){
+            for (let j = 0; j<7; j++){
+                objetos.push({
+                    y: 700,
+                    draw: () =>{
+                        ctx.drawImage(ground, i *30,400 + j*30 ,30, 30);
+                    }
+                });
+            }
+        }
+
         adicionarEntidades(objetos);
 
         objetos.sort((a, b) => a.y - b.y);
         objetos.forEach(o => o.draw());
-
-        // chão grid
-        for (let i = 0; i<21; i++){
-            for (let j = 0; j<7; j++){
-                ctx.strokeStyle = "#000000";
-                ctx.strokeRect(i *30,400 + j*30 ,30, 30);
-            }
-        }
 
         drawHUD();
     }
@@ -280,11 +278,6 @@ setInterval(function() {
         ctx.fillRect(0,0,600,600);
 
         let objetos = [];
-
-        objetos.push({ y: 400+300, draw: () => {
-            ctx.fillStyle = "Gray";
-            ctx.fillRect(0,400,600,300);
-        }});
 
         for (let i= 0; i<8; i++){
             objetos.push({
@@ -304,18 +297,22 @@ setInterval(function() {
             draw: () => drawEye(300, 100, warrior_jhon)
         });
 
+        // chão grid
+        for (let i = 0; i<21; i++){
+            for (let j = 0; j<7; j++){
+                objetos.push({
+                    y: 700,
+                    draw: () =>{
+                        ctx.drawImage(ground,i *30,400 + j*30 ,30, 30);
+                    }
+                });
+            }
+        }
+
         adicionarEntidades(objetos);
 
         objetos.sort((a, b) => a.y - b.y);
         objetos.forEach(o => o.draw());
-
-        // chão grid
-        for (let i = 0; i<21; i++){
-            for (let j = 0; j<7; j++){
-                ctx.strokeStyle = "Black";
-                ctx.strokeRect(i *30,400 + j*30 ,30, 30);
-            }
-        }
 
         drawHUD();
     }
