@@ -410,6 +410,7 @@ class EyeBoss{
         this.map = map;
         this.secState = false;
         this.currentParticles = [];
+        this.state = 0;
 
     }
 
@@ -424,6 +425,28 @@ class EyeBoss{
 
         if (this.secState && this.trdEye.x > 300) {
             this.trdEye.x -= 1;
+        }
+
+        if (time%300 == 1){
+            this.state = (this.state + 1)%4;
+        }
+
+        if(this.state == 1){
+            if(this.firstEye.x > 50){
+                this.firstEye.x -= 1;
+            }
+            if(this.secEye.x < 550){
+                this.secEye.x += 1;
+            }
+        }
+
+        if(this.state == 3){
+            if(this.firstEye.x < 275){
+                this.firstEye.x += 1;
+            }
+            if(this.secEye.x > 325){
+                this.secEye.x -= 1;
+            }
         }
 
         //ataque do primeiro olho
@@ -482,7 +505,7 @@ class EyeBoss{
     }
 
     draw(){
-        drawRope(this.firstEye, this.secEye, "red", 800);
+        drawRope(this.firstEye, this.secEye, "red", 650);
         drawRope(this.secEye, this.trdEye, "red", 700);
         this.firstEye.draw();
         this.secEye.draw();   

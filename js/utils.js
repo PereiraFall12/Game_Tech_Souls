@@ -66,7 +66,7 @@ function drawRope(A, B, color, L = 400) {
     let Cx, Cy;
 
     if (dist < L) {
-        const h = Math.sqrt(Math.pow(L / 2, 2) - Math.pow(dist / 2, 2)) * 0.85;
+        const h = Math.sqrt(Math.pow(L / 2, 2) - Math.pow(dist / 2, 2)) * 1.33;
         Cx = midX;
         Cy = midY + h; // A gravidade puxa para baixo no eixo Y
     } else {
