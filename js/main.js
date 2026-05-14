@@ -427,6 +427,17 @@ setInterval(function() {
             }
         }
 
+        for (let b of bosses){
+            if(b.morto && b.map == mapa){
+                objetos.push({
+                    y: 900,
+                    draw: () => {
+                        ctx.drawImage(victory_image, 150, 200, 300, 100);
+                    }
+                })
+            }
+        }
+
         adicionarEntidades(objetos);
 
         objetos.sort((a, b) => a.y - b.y);

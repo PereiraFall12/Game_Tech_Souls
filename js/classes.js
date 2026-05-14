@@ -421,7 +421,7 @@ class EyeBoss{
         this.secEye = new EyeUnity(sec_x, first_y, color_2, r = r);
         this.trdEye = new EyeUnity(trd_x, trd_y, color_3, r = r);
         this.vidaMax = 1000;
-        this.vida = 1000;
+        this.vida = 1;
         this.r = r;
         this.map = map;
         this.secState = false;
@@ -437,7 +437,7 @@ class EyeBoss{
         this.original_sec_y = sec_y;
         this.original_trd_x = trd_x;
         this.original_trd_y = trd_y;
-        this.tempoMorto = 0;
+        this.Morto = false;
         this.alpha = 1;
     }
 
@@ -585,6 +585,7 @@ class EyeBoss{
                 ));
             }
         }else{
+            this.morto = true;
             if(this.alpha > 0){
                 this.alpha = this.alpha - 1/180;
                 if(this.alpha <= 0){
