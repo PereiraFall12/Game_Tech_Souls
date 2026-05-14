@@ -65,6 +65,11 @@ ground.src = "images/ground.png"
 let wall_1 = new Image();
 wall_1.src = "images/wall_1.png"
 
+let heart_1 = new Image();
+let heart_2 = new Image();
+heart_1.src = "images/heart_1.png"
+heart_2.src = "images/heart_2.png"
+
 let background = new Image();
 background.src = "images/background.png";
 
