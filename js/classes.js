@@ -400,7 +400,7 @@ class EyeUnity{
 }
 
 class EyeBoss{
-    constructor(first_x, first_y, sec_x, sec_y,trd_x, trd_y, color_1, color_2, color_3, r = 0, map = 4){
+    constructor(first_x, first_y, sec_x, sec_y,trd_x, trd_y, color_1, color_2, color_3, sprites, r = 0, map = 4){
         this.firstEye = new EyeUnity(first_x, first_y, color_1, r = r);
         this.secEye = new EyeUnity(sec_x, first_y, color_2, r = r);
         this.trdEye = new EyeUnity(trd_x, trd_y, color_3, r = r);
@@ -411,13 +411,23 @@ class EyeBoss{
         this.secState = false;
         this.currentParticles = [];
         this.state = 0;
+        this.heart_sprites = sprites;
+        this.heart_position = {x:0, y:0};
+        this.heart_state = 0;
+    }
 
+    getHeartBox(){
+        return {x: this.heart_position.x - 20, y: this.heart_position.y, w: 40, h:40}
     }
 
     update(warrior, time) {
         this.firstEye.update(warrior);
         this.secEye.update(warrior);
         this.trdEye.update(warrior);
+
+        this.heart_position = getLowestPoint(this.firstEye, this.secEye, 650);
+        
+        this.heart_state = Math.trunc(time * this.vidaMax*0.05/(this.vida + 100))%2;
 
         if (this.vida < this.vidaMax / 2) {
             this.secState = true;
@@ -510,5 +520,6 @@ class EyeBoss{
         this.firstEye.draw();
         this.secEye.draw();   
         this.trdEye.draw();
+        ctx.drawImage(this.heart_sprites[this.heart_state], this.heart_position.x - 20, this.heart_position.y, 40, 40);
     }
 }

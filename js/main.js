@@ -143,7 +143,7 @@ alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0),
     
 ];
 
-bosses = [new EyeBoss(150, 150, 450, 150, 700, 75, "red", "green", "darkblue", 800, 4)];
+bosses = [new EyeBoss(150, 150, 450, 150, 700, 75, "red", "#05fc1e", "darkblue", [heart_1, heart_2], 800, 4)];
 
 particles = [];
 

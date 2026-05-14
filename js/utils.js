@@ -105,3 +105,28 @@ function checkCollision(circle, rect) {
     // 4. Se a distância for menor que o raio ao quadrado, colidiu!
     return distanceSquared < (circle.radius * circle.radius);
 }
+
+function getLowestPoint(A, B, L = 400) {
+    const dx = B.x - A.x;
+    const dy = B.y - A.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    const midX = (A.x + B.x) / 2;
+    const midY = (A.y + B.y) / 2;
+
+    let Cx, Cy;
+
+    if (dist < L) {
+        const h = Math.sqrt(Math.pow(L / 2, 2) - Math.pow(dist / 2, 2)) * 1.33;
+        Cx = midX;
+        Cy = midY + h;
+    } else {
+        Cx = midX;
+        Cy = midY;
+    }
+
+    const lowestX = 0.25 * A.x + 0.5 * Cx + 0.25 * B.x;
+    const lowestY = 0.25 * A.y + 0.5 * Cy + 0.25 * B.y;
+
+    return { x: lowestX, y: lowestY };
+}
