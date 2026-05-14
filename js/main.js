@@ -50,9 +50,9 @@ function trocarMusica(novaMusica) {
     }
 
     musicaAtual = novaMusica;
-    musicaAtual.volume = 0.3;
+    musicaAtual.volume = 0.2;
     if(musicaAtual != soft_ambient_sound){
-        musicaAtual.volume = 0.25;
+        musicaAtual.volume = 0.6;
     }
     musicaAtual.play();
 }
