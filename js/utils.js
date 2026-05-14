@@ -52,7 +52,7 @@ function applyFilter(img, a,r = 1, g = 1, b = 1) {
     return canvasOff;
 }
 
-function drawRope(A, B, color,L = 400) {
+function drawRope(A, B, color, L = 400) {
 
     // 1. Calcular a distância atual entre os pontos
     const dx = B.x - A.x;

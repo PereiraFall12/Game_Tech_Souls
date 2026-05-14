@@ -100,6 +100,15 @@ function adicionarEntidades(objetos) {
             });
         }
     }
+
+    for (let b of bosses){
+        if (b.map == mapa){
+            objetos.push({
+                y: b.r,
+                draw: () => b.draw()
+        })
+        }
+    }
 }
 
 
@@ -125,6 +134,7 @@ alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0),
     
 ];
 
+bosses = [new EyeBoss(200, 200, 400, 200, "red", "green", 800, 4)];
 
 particles = [];
 
@@ -163,7 +173,13 @@ setInterval(function() {
             enemies_list[i].update(tempo, warrior_jhon);
         }
     }
-
+    
+    //atuaização do boss
+    for(let b of bosses){
+        if(b.map == mapa){
+            b.update(warrior_jhon, tempo);
+        }
+    }
 
     if (mapa == 0) {
         // Fundo
@@ -322,6 +338,7 @@ setInterval(function() {
         drawHUD();
     }
 
+
     else if(mapa == 4){
 
         for (let i = 0; i<21; i++){
@@ -367,7 +384,7 @@ setInterval(function() {
 
     }
 
-    // Interação com Bonfires
+    //Interação com Bonfires
     for(var i = 0; i<bonfires.length; i++){
         if(bonfires[i].map == mapa){
             bonfires[i].update(tempo);
@@ -382,7 +399,7 @@ setInterval(function() {
         p.update(warrior_jhon);
     }
 
-    // Atuaçização de objetos iterativos
+    // Atualização de objetos iterativos
     for(let o of alpha_object_list){
         o.update(warrior_jhon);
     }

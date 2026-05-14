@@ -388,12 +388,13 @@ class EyeUnity{
 }
 
 class EyeBoss{
-    constructor(first_x, first_y, sec_x, sec_y, color_1, color_2, r = 0){
+    constructor(first_x, first_y, sec_x, sec_y, color_1, color_2, r = 0, map = 4){
         this.firstEye = new EyeUnity(first_x, first_y, color_1, r = r);
         this.secEye = new EyeUnity(sec_x, first_y, color_2, r = r);
         this.vidaMax = 1000;
         this.vida = 1000;
         this.r = r;
+        this.map = map;
     }
 
     update(warrior, time){
@@ -402,7 +403,7 @@ class EyeBoss{
     }
 
     draw(){
-        drawRope(this.firstEye, this.secEye, "red", L = 400);
+        drawRope(this.firstEye, this.secEye, "red", 400);
         this.firstEye.draw();
         this.secEye.draw();   
     }
