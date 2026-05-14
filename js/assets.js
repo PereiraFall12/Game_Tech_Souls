@@ -89,9 +89,13 @@ let defended_attack_sound = new Audio("sounds/defended_attack_sound.wav");
 let miss_attack_sound = new Audio("sounds/miss_attack_sound.wav");
 let soft_ambient_sound = new Audio("sounds/soft_ambient_sound.mp3");
 let combat_sound = new Audio("sounds/battle_sound.mp3");
+let epic_fight_sound = new Audio("sounds/epic_fight.mp3");
 
+epic_fight_sound.loop = true;
 soft_ambient_sound.loop = true;
 combat_sound.loop = true;
+
+epic_fight_sound.volume = 0.6;
 soft_ambient_sound.volume = 0.0;
 combat_sound.volume = 0.3;
 attack_sound.volume = 0.2;

@@ -127,6 +127,7 @@ function adicionarEntidades(objetos) {
     }
 }
 
+epic_sound_activate = false;
 
 warrior_jhon = new Warrior(5,370, warrior_sprites);
 //enemy_albert = new Enemy(450, 360, enemy_sprites, 2);
@@ -181,7 +182,28 @@ function emCombate() {
         }
     }
     return value;
+
+
 }
+
+function soundBossLowLife(){
+    value = false;
+
+    for(let b of bosses){
+        if (b.map == mapa && b.vida > 0 && b.vida < 400){
+            value = true;
+        }
+    }
+    
+    if (value && !epic_sound_activate){
+        epic_fight_sound.play();
+    }else if(!value){
+        epic_fight_sound.pause();
+        epic_fight_sound.currentTime = 0;
+    }
+
+}
+
 
 setInterval(function() {
 
@@ -503,9 +525,12 @@ setInterval(function() {
 
     if (emCombate()) {
         trocarMusica(combat_sound);
+
     } else {
         trocarMusica(soft_ambient_sound);
     }
+
+    soundBossLowLife();
 
     if(warrior_jhon.x >570){
 
