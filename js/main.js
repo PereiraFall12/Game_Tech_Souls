@@ -242,6 +242,7 @@ setInterval(function() {
 
         let objetos = [];
         objetos.push({ y: 490+50, draw: () => ctx.drawImage(bush, 320, 490, 50, 50) });
+        objetos.push({ y: 490+130, draw: () => ctx.drawImage(bush, 550, 550, 50, 50) });
         objetos.push({ y: 430+130, draw: () => ctx.drawImage(improved_tree0, 420, 430, 130, 130) });
         objetos.push({ y: 430+50, draw: () => ctx.drawImage(bush, 40,  430, 50, 50) });
         objetos.push({ y: 450+50, draw: () => ctx.drawImage(bush, 140, 450, 50, 50) });

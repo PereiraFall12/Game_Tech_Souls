@@ -421,7 +421,7 @@ class EyeBoss{
         this.secEye = new EyeUnity(sec_x, first_y, color_2, r = r);
         this.trdEye = new EyeUnity(trd_x, trd_y, color_3, r = r);
         this.vidaMax = 1000;
-        this.vida = 1;
+        this.vida = 1000;
         this.r = r;
         this.map = map;
         this.secState = false;
