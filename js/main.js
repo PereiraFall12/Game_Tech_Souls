@@ -176,7 +176,7 @@ function emCombate() {
     value = false;
 
     for(let b of bosses){
-        if (b.map == mapa && b.vida >= 0){
+        if (b.map == mapa && b.vida > 0){
             value = true;
         }
     }
