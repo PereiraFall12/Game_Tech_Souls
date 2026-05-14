@@ -109,6 +109,15 @@ function adicionarEntidades(objetos) {
         })
         }
     }
+
+    for (let p of particles){
+        if (p.map == mapa){
+            objetos.push({
+                y: p.reg,
+                draw: () => p.draw()
+            })
+        }
+    }
 }
 
 
@@ -178,8 +187,14 @@ setInterval(function() {
     for(let b of bosses){
         if(b.map == mapa){
             b.update(warrior_jhon, tempo);
+
+            if (b.currentParticles && b.currentParticles.length > 0) {
+                particles.push(...b.currentParticles);
+                b.currentParticles = []; 
+            }
         }
     }
+
 
     if (mapa == 0) {
         // Fundo
@@ -395,8 +410,13 @@ setInterval(function() {
     }
 
     //Interação com partículas
-    for(let p of particles){
-        p.update(warrior_jhon);
+    for (let i = particles.length - 1; i >= 0; i--) {
+        let p = particles[i];
+        if (p.dead) {
+            particles.splice(i, 1); 
+        } else {
+            p.update(warrior_jhon, mapa);
+        }
     }
 
     // Atualização de objetos iterativos

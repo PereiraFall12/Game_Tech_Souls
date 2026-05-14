@@ -337,7 +337,7 @@ class InteractableObject{
 }
 
 class Particle{
-    constructor(x, y, radius, color, vx, vy, map, hostile = false, fill = false, reg = 0){
+    constructor(x, y, radius, color, vx, vy, map, hostile = false, fill = false, reg = 0, damage = 0){
         this.x = x;
         this.y = y;
         this.radius = radius;
@@ -348,12 +348,24 @@ class Particle{
         this.hostile = hostile;
         this.fill = fill;
         this.reg = reg;
+        this.damage = damage;
         this.dead = false;
     }
 
-    update(){
+    getBodyBox(){
+        return {x: this.x, y: this.y, radius: this.radius};
+    }
+
+    update(warrior, mapa){
         this.x = this.x + this.vx;
-        this.y = this.y + this.vy;  
+        this.y = this.y + this.vy;
+        if (checkCollision(this.getBodyBox(), warrior.getBodyBox()) && mapa == this.map){
+            warrior.vida = warrior.vida - this.damage;
+            this.dead = true;
+        }
+        if (!checkCollision(this.getBodyBox(), {x: 0, y:0, w:600, h: 600})){
+            this.dead = true;
+        }
     }
 
     draw(){
@@ -396,24 +408,50 @@ class EyeBoss{
         this.vida = 1000;
         this.r = r;
         this.map = map;
-        this.secState = true;
+        this.secState = false;
         this.currentParticles = [];
 
     }
 
-    update(warrior, time){
+    update(warrior, time) {
         this.firstEye.update(warrior);
         this.secEye.update(warrior);
-        if(this.vida < this.vidaMax/2){
+        this.trdEye.update(warrior);
+
+        if (this.vida < this.vidaMax / 2) {
             this.secState = true;
         }
 
-        if(this.secState){
-            if(this.trdEye.x > 300){
-                this.trdEye.x = this.trdEye.x - 1;
-            }
-        }       
+        if (this.secState && this.trdEye.x > 300) {
+            this.trdEye.x -= 1;
+        }
+
+        if (time % 180 === 1) {
+            let v = 5;
+            let dx = warrior.x - this.firstEye.x;
+            let dy = warrior.y - this.firstEye.y;
+            let angle = Math.atan2(dy, dx); 
+
+            let vx = Math.cos(angle) * v;
+            let vy = Math.sin(angle) * v;
+
+            this.currentParticles.push(new Particle(
+                this.firstEye.x, 
+                this.firstEye.y, 
+                5,               
+                "red",           
+                vx, 
+                vy, 
+                this.map, 
+                true,            
+                true,           
+                900,             
+                5               
+            ));
+        }
     }
+
+    //constructor(x, y, radius, color, vx, vy, map, hostile = false, fill = false, reg = 0, damage = 0)
 
     draw(){
         drawRope(this.firstEye, this.secEye, "red", 800);

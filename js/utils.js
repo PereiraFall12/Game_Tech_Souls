@@ -91,7 +91,6 @@ function drawRope(A, B, color, L = 400) {
 
 function checkCollision(circle, rect) {
     // 1. Encontrar o ponto mais próximo do círculo dentro do retângulo
-    // circle: {x, y, r}, rect: {x, y, w, h}
     
     let closestX = Math.max(rect.x, Math.min(circle.x, rect.x + rect.w));
     let closestY = Math.max(rect.y, Math.min(circle.y, rect.y + rect.h));
