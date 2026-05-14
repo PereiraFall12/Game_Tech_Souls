@@ -487,7 +487,7 @@ class EyeBoss{
             }
 
             //ataque do primeiro olho
-            if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
+            if (time % Math.trunc(this.vida*(180/this.vidaMax) + 60) == 1) {
                 let v = 5;
                 let dx = warrior.x - this.firstEye.x;
                 let dy = warrior.y - this.firstEye.y;
@@ -512,7 +512,7 @@ class EyeBoss{
             }
 
             //ataque do segundo olho
-            if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
+            if (time % Math.trunc(this.vida*(180/this.vidaMax) + 60) == 1) {
                 let v = 1;
                 let dx = warrior.x - this.secEye.x;
                 let dy = warrior.y - this.secEye.y;
@@ -541,6 +541,11 @@ class EyeBoss{
         }else{
             if(this.alpha > 0){
                 this.alpha = this.alpha - 1/180;
+                if(this.alpha <= 0){
+                    this.alpha = 0;
+                }
+            }else{
+                this.alpha = 0;
             }
         }
     }
