@@ -426,7 +426,8 @@ class EyeBoss{
             this.trdEye.x -= 1;
         }
 
-        if (time % 180 === 1) {
+        //ataque do primeiro olho
+        if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
             let v = 5;
             let dx = warrior.x - this.firstEye.x;
             let dy = warrior.y - this.firstEye.y;
@@ -439,7 +440,7 @@ class EyeBoss{
                 this.firstEye.x, 
                 this.firstEye.y, 
                 5,               
-                "red",           
+                this.firstEye.color,           
                 vx, 
                 vy, 
                 this.map, 
@@ -449,9 +450,36 @@ class EyeBoss{
                 5               
             ));
         }
-    }
 
-    //constructor(x, y, radius, color, vx, vy, map, hostile = false, fill = false, reg = 0, damage = 0)
+        //ataque do segundo olho
+        if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
+            let v = 1;
+            let dx = warrior.x - this.secEye.x;
+            let dy = warrior.y - this.secEye.y;
+            let angle = Math.atan2(dy, dx); 
+
+            for(var i = 0; i< 3; i++){
+
+                let vx = Math.cos(angle + 0.5 - 0.5*i) * v;
+                let vy = Math.sin(angle + 0.5 - 0.5*i) * v;
+
+                this.currentParticles.push(new Particle(
+                    this.secEye.x, 
+                    this.secEye.y, 
+                    5,               
+                    this.secEye.color,           
+                    vx, 
+                    vy, 
+                    this.map, 
+                    true,            
+                    true,           
+                    900,             
+                    5               
+                ));
+            }
+
+        }
+    }
 
     draw(){
         drawRope(this.firstEye, this.secEye, "red", 800);
