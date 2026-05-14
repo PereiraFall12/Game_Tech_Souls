@@ -415,97 +415,92 @@ class EyeBoss{
         this.heart_position = {x:0, y:0};
         this.heart_state = 0;
         this.invecibilidade = 0;
+        this.original_first_x = first_x;
+        this.original_first_y = first_y;
+        this.original_sec_x = sec_x;
+        this.original_sec_y = sec_y;
+        this.original_trd_x = trd_x;
+        this.original_trd_y = trd_y;
+        this.tempoMorto = 0;
+        this.alpha = 1;
     }
 
     getHeartBox(){
         return {x: this.heart_position.x - 20, y: this.heart_position.y, w: 40, h:40}
     }
 
+    reset(){
+        this.firstEye.x = this.original_first_x;
+        this.firstEye.y = this.original_first_y;
+        this.secEye.x = this.original_sec_x;
+        this.secEye.y = this.original_sec_y;
+        this.trdEye.x = this.original_trd_x;
+        this.trdEye.y = this.original_trd_y;
+        this.secState = false;
+        this.vida = this.vidaMax;
+    }
+
     update(warrior, time) {
-        this.firstEye.update(warrior);
-        this.secEye.update(warrior);
-        this.trdEye.update(warrior);
 
-        if(this.invecibilidade>0){
-            this.invecibilidade--;
-        }
+        if(this.vida > 0){
+            this.firstEye.update(warrior);
+            this.secEye.update(warrior);
+            this.trdEye.update(warrior);
 
-        this.heart_position = getLowestPoint(this.firstEye, this.secEye, 650);
-        
-        this.heart_state = Math.trunc(time * this.vidaMax*0.05/(this.vida + 100))%2;
-
-        if (this.vida < this.vidaMax / 2) {
-            this.secState = true;
-        }
-
-        if (this.secState && this.trdEye.x > 300) {
-            this.trdEye.x -= 1;
-        }
-
-        if (time%300 == 1){
-            this.state = (this.state + 1)%4;
-        }
-
-        if(this.state == 1){
-            if(this.firstEye.x > 50){
-                this.firstEye.x -= 1;
+            if(this.invecibilidade>0){
+                this.invecibilidade--;
             }
-            if(this.secEye.x < 550){
-                this.secEye.x += 1;
+
+
+            this.heart_position = getLowestPoint(this.firstEye, this.secEye, 650);
+            
+            this.heart_state = Math.trunc(time * this.vidaMax*0.05/(this.vida + 100))%2;
+
+            if (this.vida < this.vidaMax / 2) {
+                this.secState = true;
             }
-        }
 
-        if(this.state == 3){
-            if(this.firstEye.x < 275){
-                this.firstEye.x += 1;
+            if (this.secState && this.trdEye.x > 300) {
+                this.trdEye.x -= 1;
             }
-            if(this.secEye.x > 325){
-                this.secEye.x -= 1;
+
+            if (time%300 == 1){
+                this.state = (this.state + 1)%4;
             }
-        }
 
-        //ataque do primeiro olho
-        if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
-            let v = 5;
-            let dx = warrior.x - this.firstEye.x;
-            let dy = warrior.y - this.firstEye.y;
-            let angle = Math.atan2(dy, dx); 
+            if(this.state == 1){
+                if(this.firstEye.x > 50){
+                    this.firstEye.x -= 1;
+                }
+                if(this.secEye.x < 550){
+                    this.secEye.x += 1;
+                }
+            }
 
-            let vx = Math.cos(angle) * v;
-            let vy = Math.sin(angle) * v;
+            if(this.state == 3){
+                if(this.firstEye.x < 275){
+                    this.firstEye.x += 1;
+                }
+                if(this.secEye.x > 325){
+                    this.secEye.x -= 1;
+                }
+            }
 
-            this.currentParticles.push(new Particle(
-                this.firstEye.x, 
-                this.firstEye.y, 
-                5,               
-                this.firstEye.color,           
-                vx, 
-                vy, 
-                this.map, 
-                true,            
-                true,           
-                900,             
-                5               
-            ));
-        }
+            //ataque do primeiro olho
+            if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
+                let v = 5;
+                let dx = warrior.x - this.firstEye.x;
+                let dy = warrior.y - this.firstEye.y;
+                let angle = Math.atan2(dy, dx); 
 
-        //ataque do segundo olho
-        if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
-            let v = 1;
-            let dx = warrior.x - this.secEye.x;
-            let dy = warrior.y - this.secEye.y;
-            let angle = Math.atan2(dy, dx); 
-
-            for(var i = 0; i< 3; i++){
-
-                let vx = Math.cos(angle + 0.5 - 0.5*i) * v;
-                let vy = Math.sin(angle + 0.5 - 0.5*i) * v;
+                let vx = Math.cos(angle) * v;
+                let vy = Math.sin(angle) * v;
 
                 this.currentParticles.push(new Particle(
-                    this.secEye.x, 
-                    this.secEye.y, 
+                    this.firstEye.x, 
+                    this.firstEye.y, 
                     5,               
-                    this.secEye.color,           
+                    this.firstEye.color,           
                     vx, 
                     vy, 
                     this.map, 
@@ -516,10 +511,43 @@ class EyeBoss{
                 ));
             }
 
+            //ataque do segundo olho
+            if (time % Math.trunc(this.vida*(180/this.vidaMax) + 20) == 1) {
+                let v = 1;
+                let dx = warrior.x - this.secEye.x;
+                let dy = warrior.y - this.secEye.y;
+                let angle = Math.atan2(dy, dx); 
+
+                for(var i = 0; i< 3; i++){
+
+                    let vx = Math.cos(angle + 0.5 - 0.5*i) * v;
+                    let vy = Math.sin(angle + 0.5 - 0.5*i) * v;
+
+                    this.currentParticles.push(new Particle(
+                        this.secEye.x, 
+                        this.secEye.y, 
+                        5,               
+                        this.secEye.color,           
+                        vx, 
+                        vy, 
+                        this.map, 
+                        true,            
+                        true,           
+                        900,             
+                        5               
+                    ));
+                }
+            }
+        }else{
+            if(this.alpha > 0){
+                this.alpha = this.alpha - 1/180;
+            }
         }
     }
 
     draw(){
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
         drawRope(this.firstEye, this.secEye, "red", 650);
         drawRope(this.secEye, this.trdEye, "red", 700);
         this.firstEye.draw();
@@ -535,5 +563,6 @@ class EyeBoss{
         ctx.fillRect(50, 500, Math.trunc(this.vida/2), 25);
         ctx.strokeStyle = "#000000";
         ctx.strokeRect(50, 500, this.vidaMax/2, 25);
+        ctx.restore();
     }
 }

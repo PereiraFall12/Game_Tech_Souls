@@ -34,7 +34,9 @@ function die(warrior) {
     });
 
     bosses.forEach(e => {
-        e.vida = e.vidaMax; 
+        if(e.vida>0){
+            e.reset();  
+        }
     });
 
 }
