@@ -70,6 +70,9 @@ let heart_2 = new Image();
 heart_1.src = "images/heart_1.png"
 heart_2.src = "images/heart_2.png"
 
+let victory_image = new Image();
+victory_image.src = "images/victory.png"
+
 let background = new Image();
 background.src = "images/background.png";
 
