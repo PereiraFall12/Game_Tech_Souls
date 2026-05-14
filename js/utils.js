@@ -51,3 +51,38 @@ function applyFilter(img, a,r = 1, g = 1, b = 1) {
     
     return canvasOff;
 }
+
+function drawRope(A, B, color,L = 400) {
+
+    // 1. Calcular a distância atual entre os pontos
+    const dx = B.x - A.x;
+    const dy = B.y - A.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // 2. Encontrar o ponto médio
+    const midX = (A.x + B.x) / 2;
+    const midY = (A.y + B.y) / 2;
+
+    let Cx, Cy;
+
+    if (dist < L) {
+        const h = Math.sqrt(Math.pow(L / 2, 2) - Math.pow(dist / 2, 2)) * 0.85;
+        Cx = midX;
+        Cy = midY + h; // A gravidade puxa para baixo no eixo Y
+    } else {
+        // 4. Se a corda estiver esticada ao máximo, o ponto de controle é o meio (reta)
+        Cx = midX;
+        Cy = midY;
+    }
+
+    // 5. Desenhar a curva de Bézier Quadrática
+    ctx.beginPath();
+    ctx.moveTo(A.x, A.y);
+    ctx.quadraticCurveTo(Cx, Cy, B.x, B.y);
+    
+    // Estilização básica (você pode alterar para o estilo do Tech Souls)
+    ctx.strokeStyle = color; // Um tom marrom de corda
+    ctx.lineWidth = 5;
+    ctx.lineJoin = "round";
+    ctx.stroke();
+}
