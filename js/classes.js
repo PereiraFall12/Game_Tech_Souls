@@ -39,6 +39,7 @@ class Warrior{
         this.attack_range = 20;
         this.levou_dano = 0;
         this.levou_dano_direção = 0;
+        this.congelamento = 0;
     }
 
     update(teclas, tempo){
@@ -62,6 +63,14 @@ class Warrior{
         if (this.levou_dano>0){
             this.levou_dano--;
         }
+
+        if (this.congelamento>0){
+            this.congelamento--;
+            this.vel = 1;
+        }else{
+            this.vel = 2;
+        }
+
 
         this.stamin = Math.min(this.staminMax, Math.max(this.stamin + 0.01, 0));
 
@@ -251,6 +260,12 @@ class Enemy{
 
     draw(){
         
+        ctx.save();
+
+        if (this.congelamento >0 ){
+            ctx.filter = "hue-rotate(180deg) saturate(1.2) brightness(0.8)";
+        }
+
         if(this.status == 0) {
             ctx.drawImage(this.sprite[0], this.x, this.y, this.w, 40);
         }else if(this.status == 1) {
@@ -259,23 +274,19 @@ class Enemy{
             ctx.drawImage(this.sprite[2], this.x, this.y, this.w, 40);
         }else if(this.status == 3) {
 
-            ctx.save();
             ctx.scale(-1, 1); 
             ctx.drawImage(this.sprite[0], -this.x - this.w, this.y, this.w, 40);
-            ctx.restore();
 
         }else if(this.status == 4) {
 
-            ctx.save();
+            
             ctx.scale(-1, 1); 
             ctx.drawImage(this.sprite[1], -this.x - this.w, this.y, this.w, 40);
-            ctx.restore();
 
         }else if(this.status == 5){
-            ctx.save();
+            
             ctx.scale(-1, 1); 
             ctx.drawImage(this.sprite[2], -this.x - this.w, this.y, this.w, this.h);
-            ctx.restore();
 
         }else if (this.status == 6){
             ctx.drawImage(this.sprite[3], this.x, this.y, this.w, this.h);
@@ -285,21 +296,19 @@ class Enemy{
             
         }else if (this.status == 8){
 
-            ctx.save();
             ctx.scale(-1, 1);
             ctx.drawImage(this.sprite[3], -this.x-this.w, this.y, this.w, this.h);
-            ctx.restore();
 
         }else if (this.status == 9){
 
-            ctx.save();
             ctx.scale(-1, 1);
             ctx.drawImage(this.sprite[4], -this.x-this.attack_range - this.w, this.y, this.attack_range + this.w, this.h);
-            ctx.restore();
             
         }else if (this.status == 10){
             ctx.drawImage(this.sprite[5], this.x - 5, this.y, this.attack_range + this.w, this.h);
         }
+
+        ctx.restore();
         
     }
 }
@@ -337,7 +346,7 @@ class InteractableObject{
 }
 
 class Particle{
-    constructor(x, y, radius, color, vx, vy, map, hostile = false, fill = false, reg = 0, damage = 0){
+    constructor(x, y, radius, color, vx, vy, map, hostile = false, fill = false, reg = 0, damage = 0, congelamento = 0){
         this.x = x;
         this.y = y;
         this.radius = radius;
@@ -350,6 +359,7 @@ class Particle{
         this.reg = reg;
         this.damage = damage;
         this.dead = false;
+        this.congelamento = congelamento; 
     }
 
     getBodyBox(){
@@ -361,6 +371,7 @@ class Particle{
         this.y = this.y + this.vy;
         if (checkCollision(this.getBodyBox(), warrior.getBodyBox()) && mapa == this.map){
             warrior.vida = warrior.vida - this.damage;
+            warrior.congelamento = this.congelamento;
             this.dead = true;
         }
         if (!checkCollision(this.getBodyBox(), {x: 0, y:0, w:600, h: 600})){
@@ -488,7 +499,7 @@ class EyeBoss{
 
             //ataque do primeiro olho
             if (time % Math.trunc(this.vida*(180/this.vidaMax) + 60) == 1) {
-                let v = 5;
+                let v = 4;
                 let dx = warrior.x - this.firstEye.x;
                 let dy = warrior.y - this.firstEye.y;
                 let angle = Math.atan2(dy, dx); 
@@ -507,7 +518,8 @@ class EyeBoss{
                     true,            
                     true,           
                     900,             
-                    5               
+                    5,
+                    0             
                 ));
             }
 
@@ -534,9 +546,38 @@ class EyeBoss{
                         true,            
                         true,           
                         900,             
-                        5               
+                        5,
+                        0            
                     ));
                 }
+
+            }
+
+            // atque do terceiro olho
+
+            if(this.secState && time % Math.trunc(this.vida*(180/this.vidaMax) + 60) == 1){
+                let v = 2;
+                let dx = warrior.x - this.trdEye.x;
+                let dy = warrior.y - this.trdEye.y;
+                let angle = Math.atan2(dy, dx); 
+
+                let vx = Math.cos(angle) * v;
+                let vy = Math.sin(angle) * v;
+
+                this.currentParticles.push(new Particle(
+                    this.trdEye.x, 
+                    this.trdEye.y, 
+                    5,               
+                    this.trdEye.color,           
+                    vx, 
+                    vy, 
+                    this.map, 
+                    true,            
+                    true,           
+                    900,             
+                    0,
+                    30               
+                ));
             }
         }else{
             if(this.alpha > 0){
