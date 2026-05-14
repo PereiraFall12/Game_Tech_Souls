@@ -388,23 +388,38 @@ class EyeUnity{
 }
 
 class EyeBoss{
-    constructor(first_x, first_y, sec_x, sec_y, color_1, color_2, r = 0, map = 4){
+    constructor(first_x, first_y, sec_x, sec_y,trd_x, trd_y, color_1, color_2, color_3, r = 0, map = 4){
         this.firstEye = new EyeUnity(first_x, first_y, color_1, r = r);
         this.secEye = new EyeUnity(sec_x, first_y, color_2, r = r);
+        this.trdEye = new EyeUnity(trd_x, trd_y, color_3, r = r);
         this.vidaMax = 1000;
         this.vida = 1000;
         this.r = r;
         this.map = map;
+        this.secState = true;
+        this.currentParticles = [];
+
     }
 
     update(warrior, time){
         this.firstEye.update(warrior);
         this.secEye.update(warrior);
+        if(this.vida < this.vidaMax/2){
+            this.secState = true;
+        }
+
+        if(this.secState){
+            if(this.trdEye.x > 300){
+                this.trdEye.x = this.trdEye.x - 1;
+            }
+        }       
     }
 
     draw(){
-        drawRope(this.firstEye, this.secEye, "red", 400);
+        drawRope(this.firstEye, this.secEye, "red", 800);
+        drawRope(this.secEye, this.trdEye, "red", 700);
         this.firstEye.draw();
         this.secEye.draw();   
+        this.trdEye.draw();
     }
 }

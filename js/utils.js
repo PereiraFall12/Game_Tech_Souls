@@ -80,9 +80,29 @@ function drawRope(A, B, color, L = 400) {
     ctx.moveTo(A.x, A.y);
     ctx.quadraticCurveTo(Cx, Cy, B.x, B.y);
     
+    ctx.save();
     // Estilização básica (você pode alterar para o estilo do Tech Souls)
     ctx.strokeStyle = color; // Um tom marrom de corda
     ctx.lineWidth = 5;
     ctx.lineJoin = "round";
     ctx.stroke();
+    ctx.restore();
+}
+
+function checkCollision(circle, rect) {
+    // 1. Encontrar o ponto mais próximo do círculo dentro do retângulo
+    // circle: {x, y, r}, rect: {x, y, w, h}
+    
+    let closestX = Math.max(rect.x, Math.min(circle.x, rect.x + rect.w));
+    let closestY = Math.max(rect.y, Math.min(circle.y, rect.y + rect.h));
+
+    // 2. Calcular a distância entre o centro do círculo e esse ponto próximo
+    let distanceX = circle.x - closestX;
+    let distanceY = circle.y - closestY;
+
+    // 3. Usar o teorema de Pitágoras para a distância real (ao quadrado para performance)
+    let distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+
+    // 4. Se a distância for menor que o raio ao quadrado, colidiu!
+    return distanceSquared < (circle.radius * circle.radius);
 }
