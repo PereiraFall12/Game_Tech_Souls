@@ -136,6 +136,13 @@ class Warrior{
     }
 
     draw(){
+
+        ctx.save();
+
+        if (this.congelamento >0 ){
+            ctx.filter = "hue-rotate(180deg) saturate(1.2) brightness(0.8)";
+        }
+
         if(this.status == 0) {
             ctx.drawImage(this.sprite[0], this.x, this.y, this.w, this.h);
         }else if(this.status == 1) {
@@ -144,24 +151,26 @@ class Warrior{
             ctx.drawImage(this.sprite[2], this.x, this.y, this.w, this.h);
         }else if(this.status == 3) {
 
-            ctx.save();
+            
             ctx.scale(-1, 1); 
             ctx.drawImage(this.sprite[0], -this.x - this.w, this.y, this.w, this.h);
-            ctx.restore();
+            
 
         }else if(this.status == 4) {
-            ctx.save();
+            
             ctx.scale(-1, 1); 
             ctx.drawImage(this.sprite[1], -this.x - this.w, this.y, this.w, this.h);
-            ctx.restore();
+            
         }else if(this.status == 5){
             ctx.drawImage(this.sprite[3], this.x, this.y, this.w + this.attack_range, this.h);
         }else if(this.status == 6){
-            ctx.save();
+            
             ctx.scale(-1, 1); 
             ctx.drawImage(this.sprite[3], -this.x -this.w, this.y, this.w + this.attack_range, this.h);
-            ctx.restore();
+            
         }
+
+        ctx.restore();
     }
 }
 
@@ -261,10 +270,6 @@ class Enemy{
     draw(){
         
         ctx.save();
-
-        if (this.congelamento >0 ){
-            ctx.filter = "hue-rotate(180deg) saturate(1.2) brightness(0.8)";
-        }
 
         if(this.status == 0) {
             ctx.drawImage(this.sprite[0], this.x, this.y, this.w, 40);
