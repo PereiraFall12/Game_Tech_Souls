@@ -32,6 +32,11 @@ function die(warrior) {
     enemies_list.forEach(e => {
         e.vida = 2; 
     });
+
+    bosses.forEach(e => {
+        e.vida = e.vidaMax; 
+    });
+
 }
 
 function trocarMusica(novaMusica) {
@@ -165,7 +170,15 @@ document.addEventListener("keydown", (event) => {
 
 
 function emCombate() {
-    return false;
+
+    value = false;
+
+    for(let b of bosses){
+        if (b.map == mapa && b.vida >= 0){
+            value = true;
+        }
+    }
+    return value;
 }
 
 setInterval(function() {
@@ -442,6 +455,15 @@ setInterval(function() {
             }
         }
         warrior_jhon.status = 2; 
+
+        for (let b of bosses){
+            if(colide(hit, b.getHeartBox()) && b.invecibilidade == 0 && b.map == mapa){
+                b.vida = b.vida - 20;
+                b.invecibilidade = 40;
+                defended_attack_sound.currentTime = 0.19;
+                defended_attack_sound.play();
+            }
+        }
     }
 
     //Ataque do inimigo
@@ -494,6 +516,12 @@ setInterval(function() {
             }
         }
 
+        for(var i = 0; i<bosses.length; i++){
+            if(bosses[i].vida>0 && bosses[i].map == mapa){
+                pass_edge = false;
+            }
+        }
+
         if (pass_edge == false || mapa == num_cenarios -1){
             warrior_jhon.x =570;
         }else{
@@ -509,6 +537,12 @@ setInterval(function() {
 
         for(var i = 0; i<enemies_list.length; i++){
             if(enemies_list[i].vida>0 && enemies_list[i].map == mapa){
+                pass_edge = false;
+            }
+        }
+
+        for(var i = 0; i<bosses.length; i++){
+            if(bosses[i].vida>0 && bosses[i].map == mapa){
                 pass_edge = false;
             }
         }

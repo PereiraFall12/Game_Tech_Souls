@@ -414,6 +414,7 @@ class EyeBoss{
         this.heart_sprites = sprites;
         this.heart_position = {x:0, y:0};
         this.heart_state = 0;
+        this.invecibilidade = 0;
     }
 
     getHeartBox(){
@@ -424,6 +425,10 @@ class EyeBoss{
         this.firstEye.update(warrior);
         this.secEye.update(warrior);
         this.trdEye.update(warrior);
+
+        if(this.invecibilidade>0){
+            this.invecibilidade--;
+        }
 
         this.heart_position = getLowestPoint(this.firstEye, this.secEye, 650);
         
@@ -521,5 +526,14 @@ class EyeBoss{
         this.secEye.draw();   
         this.trdEye.draw();
         ctx.drawImage(this.heart_sprites[this.heart_state], this.heart_position.x - 20, this.heart_position.y, 40, 40);
+
+        // desenhar vida
+
+        ctx.fillStyle = "#dddddd";
+        ctx.fillRect( 50 , 500, this.vidaMax/2, 25);
+        ctx.fillStyle = "red";
+        ctx.fillRect(50, 500, Math.trunc(this.vida/2), 25);
+        ctx.strokeStyle = "#000000";
+        ctx.strokeRect(50, 500, this.vidaMax/2, 25);
     }
 }
