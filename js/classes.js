@@ -377,9 +377,16 @@ class Particle{
         if (checkCollision(this.getBodyBox(), warrior.getBodyBox()) && mapa == this.map){
             warrior.vida = warrior.vida - this.damage;
             warrior.congelamento = this.congelamento;
+            if(this.damage > 0){
+                hit_particles_sound.currentTime = 0;
+                hit_particles_sound.play();
+            }
+            if (this.congelamento>0){
+                freezing_hit_sound.currentTime = 0.05;
+                freezing_hit_sound.play();
+            }
             this.dead = true;
-            hit_particles_sound.currentTime = 0;
-            hit_particles_sound.play();
+            
         }
         if (!checkCollision(this.getBodyBox(), {x: 0, y:0, w:600, h: 600})){
             this.dead = true;
