@@ -581,7 +581,7 @@ class EyeBoss{
                     true,           
                     900,             
                     0,
-                    30               
+                    45             
                 ));
             }
         }else{
