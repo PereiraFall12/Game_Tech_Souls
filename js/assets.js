@@ -93,6 +93,8 @@ let miss_attack_sound = new Audio("sounds/miss_attack_sound.wav");
 let soft_ambient_sound = new Audio("sounds/soft_ambient_sound.mp3");
 let combat_sound = new Audio("sounds/battle_sound.mp3");
 let epic_fight_sound = new Audio("sounds/epic_fight.mp3");
+let ogre_attack_sound = new Audio("sounds/ogre_attack_sound.flac");
+let hit_particles_sound = new Audio("sounds/hit_particles_sound.wav");
 
 epic_fight_sound.loop = true;
 soft_ambient_sound.loop = true;
