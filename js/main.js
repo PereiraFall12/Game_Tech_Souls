@@ -516,6 +516,9 @@ setInterval(function() {
 
         if ((enemies_list[i].status == 7 || enemies_list[i].status == 9) && enemies_list[i].atacando_2 == 30) {
 
+            ogre_attack_sound.currentTime = 0;
+            ogre_attack_sound.play();
+
             if (ver_hitbox){
                 ctx.strokeStyle = "Red";
                 ctx.strokeRect( bodyInimigo.x, bodyInimigo.y, bodyInimigo.w, bodyInimigo.h);
@@ -524,10 +527,6 @@ setInterval(function() {
             if(warrior_jhon.invencibilidade == 0 && colide(bodyInimigo, bodyWarrior)){
                 warrior_jhon.vida -= 10; 
                 warrior_jhon.invencibilidade = 30; // Tempo de segurança
-
-                attack_sound.currentTime = 0;
-                attack_sound.play();
-
             }
             
             }

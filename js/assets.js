@@ -106,3 +106,5 @@ combat_sound.volume = 0.3;
 attack_sound.volume = 0.2;
 defended_attack_sound.volume = 0.2;
 miss_attack_sound.volume = 0.2;
+ogre_attack_sound.volume = 0.5;
+hit_particles_sound.vilume = 2;

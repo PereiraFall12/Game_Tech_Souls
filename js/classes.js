@@ -378,6 +378,8 @@ class Particle{
             warrior.vida = warrior.vida - this.damage;
             warrior.congelamento = this.congelamento;
             this.dead = true;
+            hit_particles_sound.currentTime = 0;
+            hit_particles_sound.play();
         }
         if (!checkCollision(this.getBodyBox(), {x: 0, y:0, w:600, h: 600})){
             this.dead = true;
