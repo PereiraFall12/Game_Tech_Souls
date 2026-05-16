@@ -23,6 +23,9 @@ function die(warrior) {
         warrior.y = 370;
     }
 
+    //reseta as particulas
+    particles = [];
+
     // Restaura a vida e stamina
     warrior.vida = warrior.vidaMax;
     warrior.stamin = warrior.staminMax;
@@ -511,7 +514,7 @@ setInterval(function() {
         let bodyWarrior = warrior_jhon.getBodyBox();
 
 
-        if (enemies_list[i].status == 7 ||enemies_list[i].status == 9) {
+        if ((enemies_list[i].status == 7 || enemies_list[i].status == 9) && enemies_list[i].atacando_2 == 30) {
 
             if (ver_hitbox){
                 ctx.strokeStyle = "Red";

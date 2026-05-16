@@ -110,10 +110,10 @@ class Warrior{
 
     getBodyBox() {
         return {
-            x: this.x,
-            y: this.y,
-            w: this.w,
-            h: this.h
+            x: this.x + 3,
+            y: this.y + 3, 
+            w: this.w - 6,
+            h: this.h - 3
         };
     }
 
