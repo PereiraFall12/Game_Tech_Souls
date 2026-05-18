@@ -3,6 +3,8 @@
 Um motor de jogo de ação em 2D construído inteiramente com **JavaScript Vanilla** e **Canvas API**. O projeto aplica conceitos de orientação a objetos, máquinas de estado e refatoração modular.
 O jogo sofrerá atualizações periodicamente para aportar novas ideias e implementações.
 
+[Clique aqui para jogar!](https://pereirafall12.github.io/Game_Tech_Souls/)
+
 ## Demonstração
 >![Demonstração do Gameplay](./gif/gameplay.gif)
 
