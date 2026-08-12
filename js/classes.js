@@ -629,7 +629,7 @@ class EyeBoss{
 }
 
 class TextBox{
-    constructor(texto, x, y,map, font = "30px Arial", style = "yellow", r = 2000){
+    constructor(texto, x, y,map, font = "30px Arial", style = "black", r = 2000){
         this.texto = texto;
         this.x = x;
         this.y = y;
@@ -656,7 +656,7 @@ class TextBox{
     draw(){
         if(this.activate){
             ctx.font = this.font;
-            ctx.fillStyle = this.collor;
+            ctx.fillStyle = this.style;
             ctx.fillText(this.texto, this.x, this.y);
         }
     }
