@@ -627,3 +627,35 @@ class EyeBoss{
         ctx.restore();
     }
 }
+
+class TextBox{
+    constructor(texto, x, y,map, font = "30px Arial", style = "yellow", r = 2000){
+        this.texto = texto;
+        this.x = x;
+        this.y = y;
+        this.font = font;
+        this.style = style;
+        this.activate = true;
+        this.map = map
+        this.r = r;
+        this.delay = 200;
+        this.lastTime = 0;
+        
+    }
+
+    update(teclas, tempo){
+        if(tempo - this.lastTime > this.delay && this.activate){
+            this.activate = false;
+        }else if(tempo - this.lastTime > this.delay && !this.activate){
+            this.activate = true;
+        }
+    }
+
+    draw(){
+        if(this.activate){
+            ctx.font = this.font;
+            ctx.fillStyle = this.collor;
+            ctx.fillText(this.texto, this.x, this.y);
+        }
+    }
+}
