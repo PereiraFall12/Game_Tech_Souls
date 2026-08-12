@@ -638,16 +638,18 @@ class TextBox{
         this.activate = true;
         this.map = map
         this.r = r;
-        this.delay = 200;
+        this.delay = 20;
         this.lastTime = 0;
         
     }
 
     update(teclas, tempo){
-        if(tempo - this.lastTime > this.delay && this.activate){
+        if(tempo - this.lastTime > this.delay && this.activate && teclas[" "]){
             this.activate = false;
-        }else if(tempo - this.lastTime > this.delay && !this.activate){
+            this.lastTime = tempo;
+        }else if(tempo - this.lastTime > this.delay && !this.activate && teclas[" "]){
             this.activate = true;
+            this.lastTime = tempo;
         }
     }
 

@@ -128,6 +128,15 @@ function adicionarEntidades(objetos) {
             })
         }
     }
+
+    for (let t of textBoxes){
+        if (t.map == mapa){
+           objetos.push({
+                y: t.r,
+                draw: () => t.draw()
+            }) 
+        }
+    }
 }
 
 epic_sound_activate = false;
@@ -154,8 +163,9 @@ alpha_object_list = [new InteractableObject(bush, 510, 356, 50, 50, 0),
     
 ];
 
+//boss
 bosses = [new EyeBoss(150, 150, 450, 150, 700, 75, "red", "#05fc1e", "darkblue", [heart_1, heart_2], 800, 4)];
-
+textBoxes = [new TextBox("teste", 100, 100, 0)];
 particles = [];
 
 document.addEventListener("keydown", (event) => {
@@ -474,6 +484,11 @@ setInterval(function() {
     // Atualização de objetos iterativos
     for(let o of alpha_object_list){
         o.update(warrior_jhon);
+    }
+
+    // Atualização de objetos iterativos
+    for(let t of textBoxes){
+        t.update(teclas, tempo);
     }
 
     //Ataque do jogador
